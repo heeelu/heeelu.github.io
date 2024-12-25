@@ -1,40 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>helu</title>
     <meta charset="UTF-8">
-    <meta name="description" content="PAGE">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="theme-color" content="#ffffff">
-    <meta property="og:title" content="helu">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://heeelu.github.io/">
-    <meta property="og:image" content="https://heeelu.github.io/favicon.png">
-    <meta property="og:description" content=" - ">
-    <meta property="og:locale" content="en_US">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KGF7</title>
+    <style>
+        /* Allgemeine Stile */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="assets/css/main.css">
+    /* Weltraum-Hintergrund */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg');
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+        animation: spaceMove 30s linear infinite; /* Geschwindigkeit auf 30s angepasst */
+    }
 
-    <link rel="icon" href="a" type="image/png" />
+    @keyframes spaceMove {
+        0% {
+            transform: scale(1) translateX(0);
+        }
+        50% {
+            transform: scale(1.05) translateX(-10px);
+        }
+        100% {
+            transform: scale(1) translateX(0);
+        }
+    }
+
+        /* Container */
+        .commands-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        /* Prefix Text */
+        .prefix-text {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: white;
+            display: inline-block;
+            animation: glow 2s infinite alternate;
+        }
+
+        /* Glow Animation */
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+            }
+        }
+
+        /* Überschrift (Command Button) */
+        h1 {
+            font-size: 48px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: glow 2s infinite alternate;
+            cursor: pointer;
+        }
+
+        /* Command Styles */
+        li {
+            margin: 10px 0;
+            font-size: 24px;
+            color: white;
+            list-style-type: none;
+            text-align: center;
+        }
+
+        /* Zwei Spalten für Commands */
+        .commands-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Style für den Command Button */
+        .show-button {
+            margin: 20px 0;
+            padding: 15px 30px;
+            font-size: 48px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        .show-button:hover {
+            color: white;
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Initial versteckte Commands */
+        .hidden-commands {
+            display: none;
+        }
+
+        /* Footer für den Namen */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container container-table">
-        <div class="row vertical-center-row">
-            <div class="col-md-12 text-center">
-                <ul class="list-inline fade-in-down">
-                    <li><a target="_blank" rel="me" href="https://github.com/heeelu" class="btn-social btn-outline" title="Github"><i class="fab fa-github"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://twitch.tv/heelu_" class="btn-social btn-outline" title="Twitch"><i class="fab fa-twitch"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://twitter.com/heelu_" class="btn-social btn-outline u" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://steamcommunity.com/id/xhelu_" class="btn-social btn-outline" title="Steam"><i class="fab fa-steam"></i></a></li>
-                    <li><a target="_blank" href="https://open.spotify.com/user/31gllbi47ddajnk3ndupmlvvjd7i" class="btn-social btn-outline" title="Spotify"><i class="fab fa-spotify"></i></a></li>
-                </ul>
-            </div>
+    <div class="commands-container">
+        <!-- Der Button wird jetzt ein h1-Tag mit dem Text "Commands" -->
+        <h1 class="show-button" onclick="toggleCommands()">Commands</h1>
+
+        <!-- Prefix Text anzeigen -->
+        <div id="prefix" class="prefix-text hidden-commands">Prefix: §</div>
+
+        <!-- Container für die versteckten Commands -->
+        <div id="command-list" class="hidden-commands">
+            <ul class="commands-wrapper">
+                <li>join - Damit der Bot in deinem Chat joinen kann</li>
+                <li>uptime - Um zu sehen, wie lange der Bot schon läuft</li>
+                <li>cunye - Snitch cunye, wurde geleakt</li>
+                <li>ping - Pingt den Bot in meinem Chat</li>
+            </ul>
         </div>
     </div>
-</body>
 
+    <!-- Footer mit deinem Namen -->
+    <div class="footer">
+        © 2024 helu
+    </div>
+
+    <script>
+        // Funktion, die die versteckten Commands und Prefix anzeigt oder versteckt
+        function toggleCommands() {
+            var commandList = document.getElementById("command-list");
+            var prefix = document.getElementById("prefix");
+
+            if (commandList.style.display === "none" || commandList.style.display === "") {
+                commandList.style.display = "block";
+                prefix.style.display = "block"; // Zeigt das Prefix an
+            } else {
+                commandList.style.display = "none";
+                prefix.style.display = "none"; // Versteckt das Prefix
+            }
+        }
+    </script>
+</body>
 </html>
