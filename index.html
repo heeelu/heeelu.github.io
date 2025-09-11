@@ -1,40 +1,523 @@
+
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="de">
 <head>
-    <title>helu</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="PAGE">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="theme-color" content="#ffffff">
-    <meta property="og:title" content="helu">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://heeelu.github.io/">
-    <meta property="og:image" content="https://heeelu.github.io/favicon.png">
-    <meta property="og:description" content=" - ">
-    <meta property="og:locale" content="en_US">
+  <meta charset="UTF-8">
+  <title>helu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="tja moin leute apo ist auf trocken am start meine freunde" />
+  <meta property="image" content="https://img.maus.bio/raw/20324149.png">
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    :root {
+      --glowColor: #5e5e5ecc;
+    }
 
-    <link rel="icon" href="a" type="image/png" />
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Satoshi', sans-serif;
+      overflow: hidden;
+      background: url('https://whitescreen.online/image/black-background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(25px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .overlay-text {
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 0 0 15px var(--glowColor);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .container-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .hover-3d {
+      perspective: 1000px;
+    }
+
+    .hover-3d-inner {
+      transition: transform 0.2s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
+    .overlay-box {
+      backdrop-filter: blur(10px);
+      background-color: rgba(33, 33, 33, 0.4);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      transform: translateY(40px);
+      opacity: 0;
+      transition: all 1s ease;
+      max-width: 600px;
+      width: 90%;
+      margin: 0 ;
+    }
+
+    .overlay-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .glow {
+      text-shadow: 0 0 18px var(--glowColor);
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .social-icons a {
+      color: #ddd;
+      font-size: 1.5rem;
+      margin: 0 10px;
+    }
+
+    .music-player {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      color: white;
+    }
+
+    .player-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .player-header img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .track-title {
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      height: 1.2em;
+    }
+
+    .track-title span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scrollText 8s linear infinite;
+    }
+
+    .track-title.paused span {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollText {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .player-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .volume-slider-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .volume-slider {
+      position: absolute;
+      bottom: 150%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      display: none;
+      background: rgba(255,255,255,0.1);
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .volume-slider input {
+      width: 100%;
+    }
+
+    .volume-slider-container:hover .volume-slider {
+      display: block;
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      color: #ccc;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background-color: rgba(255,255,255,0.2);
+      margin: 0 10px;
+      border-radius: 5px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress {
+      height: 100%;
+      background-color: #fff;
+      width: 0%;
+      border-radius: 5px;
+    }
+
+    .cursor {
+      display: inline-block;
+      animation: blink 1s infinite;
+      color: white;
+      font-weight: bold;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+  </style>
+
+  <script>
+    const titleSteps = ["h", "he", "hel", "helu", ];
+    let i = 0;
+    let forward = true;
+
+    setInterval(() => {
+      document.title = titleSteps[i];
+      if (forward) {
+        i++;
+        if (i === titleSteps.length) {
+          i -= 2;
+          forward = false;
+        }
+      } else {
+        i--;
+        if (i < 0) {
+          i = 1;
+          forward = true;
+        }
+      }
+    }, 250);
+  </script>
+
 </head>
-
 <body>
-    <div class="container container-table">
-        <div class="row vertical-center-row">
-            <div class="col-md-12 text-center">
-                <ul class="list-inline fade-in-down">
-                    <li><a target="_blank" rel="me" href="https://github.com/heeelu" class="btn-social btn-outline" title="Github"><i class="fab fa-github"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://twitch.tv/heelu_" class="btn-social btn-outline" title="Twitch"><i class="fab fa-twitch"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://twitter.com/heelu_" class="btn-social btn-outline u" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                    <li><a target="_blank" rel="me" href="https://steamcommunity.com/id/xhelu_" class="btn-social btn-outline" title="Steam"><i class="fab fa-steam"></i></a></li>
-                    <li><a target="_blank" href="https://open.spotify.com/user/31gllbi47ddajnk3ndupmlvvjd7i" class="btn-social btn-outline" title="Spotify"><i class="fab fa-spotify"></i></a></li>
-                    <li><a target="_blank" href="https://discord.com/users/1010544156285874206" class="btn-social btn-outline" title="Discord"><i class="fab fa-discord"></i></a></li>
-                </ul>
+
+<div class="overlay" id="entryOverlay">
+  <div class="overlay-text">hi</div>
+</div>
+
+<div class="container-center">
+  <div class="hover-3d">
+    <div class="overlay-box hover-3d-inner" id="mainContent">
+      <img src="https://i1.sndcdn.com/artworks-Bgqyp7LO8mfDyyfo-EpVzow-t500x500.png" class="profile-pic mb-3">
+      <h2 class="glow">helu</h2>
+      <p class="glow"><span id="typewriter"></span><span class="cursor">|</span></p>
+
+      <div class="social-icons mt-3">
+        <a href="https://twitch.tv/heelu_" target="_blank"><i class="fab fa-twitch"></i></a>
+        <a href="https://x.com/heelu_" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://discord.com/users/1010544156285874206" target="_blank"><i class="fab fa-discord"></i></a>
+      </div>
+
+      <div class="music-player mt-4">
+        <div class="player-header">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtZt0Sorpc26GTfXGM9vgMCR9vWhNlcVmtMA&s" alt="Cover">
+          <div class="track-title paused" id="titleScroll">
+            <span>maison margiela - destroy lonelyㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ 🎧</span>
+          </div>
+          <div class="player-controls ms-auto">
+            <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+              <div class="volume-slider-container" id="volumeContainer">
+              <button id="volumeBtn"><i class="fas fa-volume-up"></i></button>
+              <div class="volume-slider" id="volumeSlider">
+                  <input type="range" min="0" max="1" step="0.01" id="volumeControl">
+              </div>
+              </div>
             </div>
+          </div>
         </div>
+
+        <div class="progress-container">
+          <span id="currentTime">0:00</span>
+          <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progressFill"></div>
+          </div>
+          <span id="duration">0:00</span>
+        </div>
+
+        <audio id="audioPlayer" preload="metadata">
+          <source src="https://screenapp.io/app/#/shared/ea4mncxGSB" type="audio/mpeg">
+        </audio>
+      </div>
     </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById("entryOverlay");
+  const content = document.getElementById("mainContent");
+  const audio = document.getElementById("audioPlayer");
+  const playPauseBtn = document.getElementById("playPauseBtn");
+  const titleScroll = document.getElementById("titleScroll");
+  const currentTimeDisplay = document.getElementById("currentTime");
+  const durationDisplay = document.getElementById("duration");
+  const progressFill = document.getElementById("progressFill");
+  const progressBar = document.getElementById("progressBar");
+  const volumeControl = document.getElementById("volumeControl");
+
+  overlay.addEventListener("click", () => {
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    content.classList.add("show");
+    setTimeout(() => {
+      audio.play();
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      titleScroll.classList.remove("paused");
+    }, 600);
+  });
+
+  playPauseBtn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      titleScroll.classList.remove("paused");
+    } else {
+      audio.pause();
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      titleScroll.classList.add("paused");
+    }
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    durationDisplay.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    currentTimeDisplay.textContent = formatTime(audio.currentTime);
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progressFill.style.width = `${percent}%`;
+  });
+
+  progressBar.addEventListener("click", (e) => {
+    const rect = progressBar.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = clickX / rect.width;
+    audio.currentTime = percent * audio.duration;
+  });
+
+  volumeControl.addEventListener("input", () => {
+    audio.volume = volumeControl.value;
+  });
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+</script>
+
+<script>
+  const volumeContainer = document.getElementById("volumeContainer");
+  const volumeSlider = document.getElementById("volumeSlider");
+  let hoverTimeout;
+
+  volumeContainer.addEventListener("mouseenter", () => {
+    clearTimeout(hoverTimeout);
+    volumeSlider.style.display = "block";
+  });
+
+  volumeContainer.addEventListener("mouseleave", () => {
+    hoverTimeout = setTimeout(() => {
+      volumeSlider.style.display = "none";
+    }, 300);
+  });
+
+  volumeSlider.addEventListener("mouseenter", () => {
+    clearTimeout(hoverTimeout);
+  });
+
+  volumeSlider.addEventListener("mouseleave", () => {
+    hoverTimeout = setTimeout(() => {
+      volumeSlider.style.display = "none";
+    }, 300);
+  });
+</script>
+
+<!-- 3D Hover Effekt -->
+<script>
+  const hover3DContainer = document.querySelector('.hover-3d');
+  const hover3DInner = document.querySelector('.hover-3d-inner');
+
+  hover3DContainer.addEventListener('mousemove', (e) => {
+    const rect = hover3DContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    hover3DInner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  hover3DContainer.addEventListener('mouseleave', () => {
+    hover3DInner.style.transform = `rotateX(0deg) rotateY(0deg)`;
+  });
+</script>
+<script>
+  const text = "ops tryna catch up, but I'm gone like the wind...";
+  const target = document.getElementById("typewriter");
+  let index = 0;
+
+  function typeWriter() {
+    if (index < text.length) {
+      target.innerHTML += text.charAt(index);
+      index++;
+      setTimeout(typeWriter, 100); // Schreibgeschwindigkeit
+    }
+  }
+
+  // Starte Effekt wenn Overlay weg ist
+  document.getElementById("entryOverlay").addEventListener("click", () => {
+    setTimeout(typeWriter, 700); // Startverzögerung nach Klick
+  });
+</script>
+<script>
+  const joinBtn = document.getElementById("discordJoinBtn");
+  joinBtn.addEventListener("mouseenter", () => {
+    joinBtn.style.transform = "scale(1.1)";
+  });
+  joinBtn.addEventListener("mouseleave", () => {
+    joinBtn.style.transform = "scale(1)";
+  });
+</script>
+<style>
+  body, * {
+    cursor: url('https://img.maus.bio/raw/51226899.png') 16 16, auto !important;
+  }
+</style>
+
+<!-- Favicon Animation -->
+<script>
+  const favicon_images = [
+    'https://img.maus.bio/raw/18445181.gif',
+    'https://img.maus.bio/raw/33076283.gif',
+    'https://img.maus.bio/raw/26732048.gif',
+    'https://img.maus.bio/raw/16882225.gif',
+    'https://img.maus.bio/raw/28883460.gif',
+    'https://img.maus.bio/raw/32989599.gif'
+  ];
+  let image_counter = 0;
+  setInterval(() => {
+    document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(e => e.remove());
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = favicon_images[image_counter];
+    document.head.appendChild(link);
+    image_counter = (image_counter + 1) % favicon_images.length;
+  }, 200);
+</script>
+
+<!-- (Optional) Live Zahl Simulation -->
+<script>
+  // Simuliere leicht fluktuierende Online-Zahlen
+  setInterval(() => {
+    const baseOnline = 87576;
+    const baseMembers = 259182;
+    document.getElementById("discordOnline").textContent = (baseOnline + Math.floor(Math.random() * 100 - 50)).toLocaleString();
+    document.getElementById("discordMembers").textContent = baseMembers.toLocaleString();
+  }, 4000);
+</script>
+
+<script>
+  // Basis-Schutz: Rechtsklick & übliche DevTools-/Quelltext-Shortcuts blockieren
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    const key = (event.key || '').toUpperCase();
+
+    // F12 (DevTools)
+    if (key === 'F12') {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    // Ctrl+Shift+I/J/C (DevTools Varianten)
+    if (event.ctrlKey && event.shiftKey && ['I','J','C'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    // Ctrl+U (Seitenquelltext), Ctrl+S (Speichern), Ctrl+P (Drucken)
+    if (event.ctrlKey && ['U','S','P'].includes(key)) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+  }, true);
+
+  // Optional: wiederholter Fokus-Diebstahl von Konsole verhindern (sehr begrenzt wirksam)
+  // Hinweis: Client-seitige Maßnahmen sind umgehbar und bieten keinen echten Schutz.
+</script>
 </body>
 </html>
