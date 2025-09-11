@@ -271,13 +271,14 @@
         <a href="https://twitch.tv/heelu_" target="_blank"><i class="fab fa-twitch"></i></a>
         <a href="https://x.com/heelu_" target="_blank"><i class="fab fa-twitter"></i></a>
         <a href="https://discord.com/users/1010544156285874206" target="_blank"><i class="fab fa-discord"></i></a>
+        <a href="https://github.com/heeelu" target="_blank"><i class="fab fa-github"></i></a>
       </div>
 
       <div class="music-player mt-4">
         <div class="player-header">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtZt0Sorpc26GTfXGM9vgMCR9vWhNlcVmtMA&s" alt="Cover">
           <div class="track-title paused" id="titleScroll">
-            <span>maison margiela - destroy lonelyㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ 🎧</span>
+            <span>maison margiela - destroy lonelㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ 🎧</span>
           </div>
           <div class="player-controls ms-auto">
             <button id="playPauseBtn"><i class="fas fa-play"></i></button>
@@ -300,7 +301,7 @@
         </div>
 
         <audio id="audioPlayer" preload="metadata">
-          <source src="https://screenapp.io/app/#/shared/ea4mncxGSB" type="audio/mpeg">
+          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/mpeg">
         </audio>
       </div>
     </div>
@@ -324,7 +325,15 @@
     overlay.style.pointerEvents = "none";
     content.classList.add("show");
     setTimeout(() => {
-      audio.play();
+      try {
+        audio.muted = false;
+        audio.volume = 0.6;
+        audio.load();
+        const playPromise = audio.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.catch(() => {/* ignore */});
+        }
+      } catch (_) {}
       playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
       titleScroll.classList.remove("paused");
     }, 600);
@@ -577,6 +586,13 @@
 
   // Optional: wiederholter Fokus-Diebstahl von Konsole verhindern (sehr begrenzt wirksam)
   // Hinweis: Client-seitige Maßnahmen sind umgehbar und bieten keinen echten Schutz.
+</script>
+<script>
+  // Zeige Hinweis, falls Audio nicht geladen werden kann
+  const audioEl = document.getElementById('audioPlayer');
+  audioEl.addEventListener('error', () => {
+    console.warn('Audio konnte nicht geladen werden. Prüfe die Audio-URL und CORS.');
+  });
 </script>
 </body>
 </html>
