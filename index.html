@@ -453,6 +453,21 @@
   }
 </style>
 
+<style>
+  /* Anti-Select/Copy/Print */
+  html, body, * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+
+  @media print {
+    body { display: none !important; }
+  }
+</style>
+
 <!-- Favicon Animation -->
 <script>
   const favicon_images = [
@@ -474,6 +489,50 @@
   }, 200);
 </script>
 
+<script>
+  // Interaktionen sperren: Kopieren/Einfügen/Markieren/Drag/Drop
+  ['copy','cut','paste','selectstart','dragstart','drop'].forEach((type) => {
+    document.addEventListener(type, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+  });
+
+  // Zusätzliche Heuristik: Wenn DevTools wahrscheinlich offen sind, Inhalt überdecken
+  (function setupDevtoolsShield(){
+    const createShield = () => {
+      let shield = document.getElementById('antiInspectOverlay');
+      if (!shield) {
+        shield = document.createElement('div');
+        shield.id = 'antiInspectOverlay';
+        shield.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2147483646;color:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;';
+        shield.textContent = '';
+        document.body.appendChild(shield);
+      }
+      return shield;
+    };
+
+    const maybeDevtoolsOpen = () => {
+      const threshold = 160; // typische DevTools-Leiste
+      const vertical = window.outerHeight - window.innerHeight > threshold;
+      const horizontal = window.outerWidth - window.innerWidth > threshold;
+      return vertical || horizontal;
+    };
+
+    let active = false;
+    setInterval(() => {
+      const open = maybeDevtoolsOpen();
+      if (open && !active) {
+        createShield().style.display = 'flex';
+        active = true;
+      } else if (!open && active) {
+        const el = document.getElementById('antiInspectOverlay');
+        if (el) el.style.display = 'none';
+        active = false;
+      }
+    }, 600);
+  })();
+</script>
 <!-- (Optional) Live Zahl Simulation -->
 <script>
   // Simuliere leicht fluktuierende Online-Zahlen
