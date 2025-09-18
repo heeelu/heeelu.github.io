@@ -177,13 +177,40 @@
       transform: translateX(-50%);
       width: 100px;
       display: none;
-      background: rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.8);
       padding: 5px;
       border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     .volume-slider input {
       width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      outline: none;
+      border-radius: 2px;
+    }
+    
+    .volume-slider input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #000;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #fff;
+    }
+    
+    .volume-slider input::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #000;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #fff;
     }
 
     .volume-slider-container:hover .volume-slider {
@@ -320,52 +347,79 @@
   const progressBar = document.getElementById("progressBar");
   const volumeControl = document.getElementById("volumeControl");
 
-  overlay.addEventListener("click", () => {
+  overlay.addEventListener("click", async () => {
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
     content.classList.add("show");
-    setTimeout(() => {
+    
+    setTimeout(async () => {
       try {
         audio.muted = false;
         audio.volume = 0.6;
         audio.load();
-        const playPromise = audio.play();
-        if (playPromise && typeof playPromise.then === 'function') {
-          playPromise.catch(() => {/* ignore */});
-        }
-      } catch (_) {}
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      titleScroll.classList.remove("paused");
+        
+        // Warte bis Audio geladen ist
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
+          audio.addEventListener('canplaythrough', () => {
+            clearTimeout(timeout);
+            resolve();
+          }, { once: true });
+          audio.addEventListener('error', () => {
+            clearTimeout(timeout);
+            reject(new Error('Audio load failed'));
+          }, { once: true });
+        });
+        
+        await audio.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        titleScroll.classList.remove("paused");
+      } catch (error) {
+        console.warn('Audio konnte nicht gestartet werden:', error.message);
+        // Fallback: Button trotzdem auf Pause setzen
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        titleScroll.classList.remove("paused");
+      }
     }, 600);
   });
 
-  playPauseBtn.addEventListener("click", () => {
-    if (audio.paused) {
-      audio.play();
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      titleScroll.classList.remove("paused");
-    } else {
-      audio.pause();
-      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-      titleScroll.classList.add("paused");
+  playPauseBtn.addEventListener("click", async () => {
+    try {
+      if (audio.paused) {
+        await audio.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        titleScroll.classList.remove("paused");
+      } else {
+        audio.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        titleScroll.classList.add("paused");
+      }
+    } catch (error) {
+      console.warn('Audio-Playback-Fehler:', error.message);
     }
   });
 
   audio.addEventListener("loadedmetadata", () => {
-    durationDisplay.textContent = formatTime(audio.duration);
+    if (audio.duration && !isNaN(audio.duration)) {
+      durationDisplay.textContent = formatTime(audio.duration);
+    }
   });
 
   audio.addEventListener("timeupdate", () => {
-    currentTimeDisplay.textContent = formatTime(audio.currentTime);
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = `${percent}%`;
+    if (audio.duration && !isNaN(audio.duration) && audio.currentTime && !isNaN(audio.currentTime)) {
+      currentTimeDisplay.textContent = formatTime(audio.currentTime);
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = `${percent}%`;
+    }
   });
 
   progressBar.addEventListener("click", (e) => {
-    const rect = progressBar.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percent = clickX / rect.width;
-    audio.currentTime = percent * audio.duration;
+    if (audio.duration && !isNaN(audio.duration)) {
+      const rect = progressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = clickX / rect.width;
+      audio.currentTime = percent * audio.duration;
+    }
   });
 
   volumeControl.addEventListener("input", () => {
@@ -458,7 +512,7 @@
 </script>
 <style>
   body, * {
-    cursor: url('https://img.maus.bio/raw/51226899.png') 16 16, auto !important;
+    cursor: url('https://raw.githubusercontent.com/archlinux/artwork/master/cursors/archlinux-dark/archlinux-dark-cursor.png') 16 16, auto !important;
   }
 </style>
 
@@ -479,22 +533,24 @@
 
 <!-- Favicon Animation -->
 <script>
-  const favicon_images = [
-    'https://img.maus.bio/raw/18445181.gif',
-    'https://img.maus.bio/raw/33076283.gif',
-    'https://img.maus.bio/raw/26732048.gif',
-    'https://img.maus.bio/raw/16882225.gif',
-    'https://img.maus.bio/raw/28883460.gif',
-    'https://img.maus.bio/raw/32989599.gif'
-  ];
-  let image_counter = 0;
+  const favicon_emojis = ['🐐', '🐐', '🐐', '🐐', '🐐', '🐐'];
+  let emoji_counter = 0;
   setInterval(() => {
     document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(e => e.remove());
     const link = document.createElement('link');
     link.rel = 'icon';
-    link.href = favicon_images[image_counter];
+    // Erstelle Data URL für Ziegen-Emoji
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.font = '24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(favicon_emojis[emoji_counter], 16, 16);
+    link.href = canvas.toDataURL();
     document.head.appendChild(link);
-    image_counter = (image_counter + 1) % favicon_images.length;
+    emoji_counter = (emoji_counter + 1) % favicon_emojis.length;
   }, 200);
 </script>
 
