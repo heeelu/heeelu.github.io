@@ -22,16 +22,78 @@
       padding: 0;
       font-family: 'Satoshi', sans-serif;
       overflow: hidden;
-      background: url('https://whitescreen.online/image/black-background.png') no-repeat center center fixed;
-      background-size: cover;
+      background: #000;
       color: white;
+      position: relative;
+    }
+
+    /* Sterne-Hintergrund */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    .star:nth-child(odd) {
+      animation-delay: 0s;
+    }
+
+    .star:nth-child(even) {
+      animation-delay: 1.5s;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+      }
+    }
+
+    /* Bewegliche Sterne */
+    .moving-star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: moveStar 20s linear infinite;
+    }
+
+    @keyframes moveStar {
+      0% {
+        transform: translateX(-100px) translateY(0px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(calc(100vw + 100px)) translateY(-200px);
+        opacity: 0;
+      }
     }
 
     .overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.6);
-      backdrop-filter: blur(25px);
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -39,11 +101,15 @@
       z-index: 999;
     }
 
+    .container-center {
+      position: relative;
+      z-index: 10;
+    }
+
     .overlay-text {
       font-size: 2rem;
       font-weight: bold;
       text-shadow: 0 0 15px var(--glowColor);
-      animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
@@ -63,25 +129,25 @@
     }
 
     .hover-3d-inner {
-      transition: transform 0.2s ease;
-      will-change: transform;
+      transition: none;
+      will-change: auto;
       transform-style: preserve-3d;
     }
 
     .overlay-box {
-      backdrop-filter: blur(10px);
-      background-color: rgba(33, 33, 33, 0.4);
+      backdrop-filter: blur(15px);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 20px;
       padding: 2rem;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
       transform: translateY(40px);
       opacity: 0;
       transition: all 1s ease;
       max-width: 600px;
       width: 90%;
-      margin: 0 ;
+      margin: 0;
     }
 
     .overlay-box.show {
@@ -102,17 +168,91 @@
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     }
 
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
     .social-icons a {
-      color: #ddd;
-      font-size: 1.5rem;
-      margin: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icons a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .social-icons a:hover::before {
+      transform: translateX(100%);
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Spezifische Farben für jede Platform */
+    .social-icons a[href*="twitch"]:hover {
+      background: rgba(145, 70, 255, 0.2);
+      border-color: #9146ff;
+      color: #9146ff;
+    }
+
+    .social-icons a[href*="x.com"] {
+      color: #e0e0e0;
+    }
+
+    .social-icons a[href*="x.com"]:hover {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .social-icons a[href*="discord"]:hover {
+      background: rgba(88, 101, 242, 0.2);
+      border-color: #5865f2;
+      color: #5865f2;
+    }
+
+    .social-icons a[href*="github"]:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #fff;
+      color: #fff;
     }
 
     .music-player {
       margin-top: 25px;
       padding: 15px;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(15px);
       border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: white;
     }
 
@@ -177,10 +317,11 @@
       transform: translateX(-50%);
       width: 100px;
       display: none;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
       padding: 5px;
       border-radius: 5px;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .volume-slider input {
@@ -258,33 +399,39 @@
   </style>
 
   <script>
-    const titleSteps = ["h", "he", "hel", "helu", ];
-    let i = 0;
-    let forward = true;
-
-    setInterval(() => {
-      document.title = titleSteps[i];
-      if (forward) {
-        i++;
-        if (i === titleSteps.length) {
-          i -= 2;
-          forward = false;
-        }
+    const titleSteps = ["@", "@h", "@he", "@hel", "@helu", ];
+    const stepDuration = 250; // 250ms pro Schritt
+    const totalCycle = (titleSteps.length * 2 - 2) * stepDuration; // Gesamte Zykluszeit
+    
+    function updateTitle() {
+      const now = Date.now();
+      const cyclePosition = (now % totalCycle) / stepDuration;
+      
+      let stepIndex;
+      if (cyclePosition < titleSteps.length) {
+        // Vorwärts: @ → @h → @he → @hel → @helu
+        stepIndex = Math.floor(cyclePosition);
       } else {
-        i--;
-        if (i < 0) {
-          i = 1;
-          forward = true;
-        }
+        // Rückwärts: @helu → @hel → @he → @h → @
+        stepIndex = titleSteps.length - 1 - Math.floor(cyclePosition - titleSteps.length);
       }
-    }, 250);
+      
+      document.title = titleSteps[stepIndex];
+    }
+    
+    // Sofort aktualisieren und dann alle 250ms
+    updateTitle();
+    setInterval(updateTitle, stepDuration);
   </script>
 
 </head>
 <body>
 
+<!-- Sterne-Hintergrund -->
+<div class="stars" id="stars"></div>
+
 <div class="overlay" id="entryOverlay">
-  <div class="overlay-text">hi</div>
+  <div class="overlay-text">Enter.</div>
 </div>
 
 <div class="container-center">
@@ -294,9 +441,9 @@
       <h2 class="glow">helu</h2>
       <p class="glow"><span id="typewriter"></span><span class="cursor">|</span></p>
 
-      <div class="social-icons mt-3">
+      <div class="social-icons">
         <a href="https://twitch.tv/heelu_" target="_blank"><i class="fab fa-twitch"></i></a>
-        <a href="https://x.com/heelu_" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://x.com/heelu_" target="_blank"><i class="fab fa-x-twitter"></i></a>
         <a href="https://discord.com/users/1010544156285874206" target="_blank"><i class="fab fa-discord"></i></a>
         <a href="https://github.com/heeelu" target="_blank"><i class="fab fa-github"></i></a>
       </div>
@@ -327,8 +474,11 @@
           <span id="duration">0:00</span>
         </div>
 
-        <audio id="audioPlayer" preload="metadata">
+        <audio id="audioPlayer" preload="auto" crossorigin="anonymous" controlsList="nodownload">
           <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/mpeg">
+          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/mp3">
+          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/wav">
+          <p>Dein Browser unterstützt das Audio-Element nicht.</p>
         </audio>
       </div>
     </div>
@@ -347,6 +497,48 @@
   const progressBar = document.getElementById("progressBar");
   const volumeControl = document.getElementById("volumeControl");
 
+  // Audio-System für maximale Browser-Kompatibilität
+  let audioInitialized = false;
+  let audioLoadAttempts = 0;
+  const maxLoadAttempts = 3;
+  
+  // Audio-Einstellungen für alle Browser optimieren
+  audio.preload = 'auto';
+  audio.crossOrigin = 'anonymous';
+  audio.defaultMuted = false;
+  audio.volume = 0.6;
+  
+  // Audio-Initialisierung
+  function initializeAudio() {
+    if (audioInitialized) return Promise.resolve();
+    
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error('Audio initialization timeout'));
+      }, 10000);
+      
+      const onCanPlay = () => {
+        clearTimeout(timeout);
+        audioInitialized = true;
+        console.log('Audio erfolgreich initialisiert');
+        resolve();
+      };
+      
+      const onError = (e) => {
+        clearTimeout(timeout);
+        console.warn('Audio-Initialisierung fehlgeschlagen:', e);
+        reject(e);
+      };
+      
+      audio.addEventListener('canplaythrough', onCanPlay, { once: true });
+      audio.addEventListener('canplay', onCanPlay, { once: true });
+      audio.addEventListener('error', onError, { once: true });
+      
+      // Audio laden
+      audio.load();
+    });
+  }
+  
   overlay.addEventListener("click", async () => {
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
@@ -354,31 +546,33 @@
     
     setTimeout(async () => {
       try {
+        // Audio initialisieren falls noch nicht geschehen
+        if (!audioInitialized) {
+          await initializeAudio();
+        }
+        
+        // Audio abspielen
         audio.muted = false;
-        audio.volume = 0.6;
-        audio.load();
-        
-        // Warte bis Audio geladen ist
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
-          audio.addEventListener('canplaythrough', () => {
-            clearTimeout(timeout);
-            resolve();
-          }, { once: true });
-          audio.addEventListener('error', () => {
-            clearTimeout(timeout);
-            reject(new Error('Audio load failed'));
-          }, { once: true });
-        });
-        
         await audio.play();
         playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
         titleScroll.classList.remove("paused");
+        
       } catch (error) {
-        console.warn('Audio konnte nicht gestartet werden:', error.message);
-        // Fallback: Button trotzdem auf Pause setzen
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        titleScroll.classList.remove("paused");
+        console.warn('Audio-Start fehlgeschlagen:', error.message);
+        
+        // Retry-Mechanismus
+        if (audioLoadAttempts < maxLoadAttempts) {
+          audioLoadAttempts++;
+          console.log(`Audio-Retry ${audioLoadAttempts}/${maxLoadAttempts}`);
+          audioInitialized = false;
+          setTimeout(() => {
+            overlay.click();
+          }, 1000);
+        } else {
+          console.error('Audio konnte nach mehreren Versuchen nicht gestartet werden');
+          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          titleScroll.classList.remove("paused");
+        }
       }
     }, 600);
   });
@@ -386,6 +580,10 @@
   playPauseBtn.addEventListener("click", async () => {
     try {
       if (audio.paused) {
+        // Audio initialisieren falls nötig
+        if (!audioInitialized) {
+          await initializeAudio();
+        }
         await audio.play();
         playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
         titleScroll.classList.remove("paused");
@@ -396,6 +594,9 @@
       }
     } catch (error) {
       console.warn('Audio-Playback-Fehler:', error.message);
+      // Fallback: Button-Status zurücksetzen
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      titleScroll.classList.add("paused");
     }
   });
 
@@ -405,7 +606,13 @@
     }
   });
 
+  // Throttle timeupdate für bessere Performance
+  let lastUpdate = 0;
   audio.addEventListener("timeupdate", () => {
+    const now = Date.now();
+    if (now - lastUpdate < 100) return; // Max 10fps für UI-Updates
+    lastUpdate = now;
+    
     if (audio.duration && !isNaN(audio.duration) && audio.currentTime && !isNaN(audio.currentTime)) {
       currentTimeDisplay.textContent = formatTime(audio.currentTime);
       const percent = (audio.currentTime / audio.duration) * 100;
@@ -424,6 +631,24 @@
 
   volumeControl.addEventListener("input", () => {
     audio.volume = volumeControl.value;
+  });
+
+  // Mute-Funktionalität für Lautsprecher-Button
+  const volumeBtn = document.getElementById("volumeBtn");
+  let isMuted = false;
+  
+  volumeBtn.addEventListener("click", () => {
+    if (isMuted) {
+      // Audio wieder einschalten
+      audio.muted = false;
+      volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      isMuted = false;
+    } else {
+      // Audio stumm schalten
+      audio.muted = true;
+      volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      isMuted = true;
+    }
   });
 
   function formatTime(seconds) {
@@ -460,39 +685,36 @@
   });
 </script>
 
-<!-- 3D Hover Effekt -->
+<!-- 3D Hover Effekt deaktiviert -->
 <script>
-  const hover3DContainer = document.querySelector('.hover-3d');
-  const hover3DInner = document.querySelector('.hover-3d-inner');
-
-  hover3DContainer.addEventListener('mousemove', (e) => {
-    const rect = hover3DContainer.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-
-    hover3DInner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
-
-  hover3DContainer.addEventListener('mouseleave', () => {
-    hover3DInner.style.transform = `rotateX(0deg) rotateY(0deg)`;
-  });
-</script>
-<script>
-  const text = "ops tryna catch up, but I'm gone like the wind...";
+  const text = "welcome.";
   const target = document.getElementById("typewriter");
   let index = 0;
+  let isDeleting = false;
 
   function typeWriter() {
-    if (index < text.length) {
+    if (!isDeleting && index < text.length) {
+      // Schreiben
       target.innerHTML += text.charAt(index);
       index++;
-      setTimeout(typeWriter, 100); // Schreibgeschwindigkeit
+      setTimeout(typeWriter, 100);
+    } else if (isDeleting && index > 0) {
+      // Löschen
+      target.innerHTML = target.innerHTML.slice(0, -1);
+      index--;
+      setTimeout(typeWriter, 50); // Schneller löschen
+    } else if (!isDeleting && index === text.length) {
+      // Pause bevor gelöscht wird
+      setTimeout(() => {
+        isDeleting = true;
+        typeWriter();
+      }, 2000); // 2 Sekunden Pause
+    } else if (isDeleting && index === 0) {
+      // Pause bevor wieder geschrieben wird
+      setTimeout(() => {
+        isDeleting = false;
+        typeWriter();
+      }, 1000); // 1 Sekunde Pause
     }
   }
 
@@ -533,8 +755,10 @@
 
 <!-- Favicon Animation -->
 <script>
-  const favicon_emojis = ['🐐', '🐐', '🐐', '🐐', '🐐', '🐐'];
-  let emoji_counter = 0;
+  const favicon_png= [
+    'https://r2.guns.lol/e1c9d312-3f10-4513-a204-492fe5e83a44.png',
+      ];
+  let image_counter = 0;
   setInterval(() => {
     document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(e => e.remove());
     const link = document.createElement('link');
@@ -644,11 +868,112 @@
   // Hinweis: Client-seitige Maßnahmen sind umgehbar und bieten keinen echten Schutz.
 </script>
 <script>
-  // Zeige Hinweis, falls Audio nicht geladen werden kann
-  const audioEl = document.getElementById('audioPlayer');
-  audioEl.addEventListener('error', () => {
-    console.warn('Audio konnte nicht geladen werden. Prüfe die Audio-URL und CORS.');
+  // Erweiterte Audio-Performance und Fehlerbehandlung
+  audio.addEventListener('error', (e) => {
+    console.warn('Audio-Fehler:', e);
+    audioInitialized = false;
   });
+  
+  audio.addEventListener('stalled', () => {
+    console.warn('Audio-Stream unterbrochen - versuche Neuladen...');
+    audioInitialized = false;
+    audio.load();
+  });
+  
+  audio.addEventListener('waiting', () => {
+    console.log('Audio buffert...');
+  });
+  
+  audio.addEventListener('canplay', () => {
+    console.log('Audio kann abgespielt werden');
+  });
+  
+  audio.addEventListener('loadstart', () => {
+    console.log('Audio-Laden gestartet');
+  });
+  
+  audio.addEventListener('loadeddata', () => {
+    console.log('Audio-Daten geladen');
+  });
+  
+  audio.addEventListener('progress', () => {
+    console.log('Audio-Laden: ' + Math.round((audio.buffered.end(0) / audio.duration) * 100) + '%');
+  });
+  
+  // Browser-spezifische Optimierungen
+  if (navigator.userAgent.includes('Firefox')) {
+    audio.preload = 'metadata';
+  } else if (navigator.userAgent.includes('Safari')) {
+    audio.preload = 'auto';
+  }
+</script>
+
+<script>
+  // Sterne-Hintergrund generieren
+  function createStars() {
+    const starsContainer = document.getElementById('stars');
+    const numStars = 150;
+    const numMovingStars = 20;
+    
+    // Statische Sterne erstellen
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      
+      // Zufällige Position
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      
+      // Zufällige Größe (1-3px)
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      // Zufällige Animation-Delay
+      star.style.animationDelay = Math.random() * 3 + 's';
+      
+      starsContainer.appendChild(star);
+    }
+    
+    // Bewegliche Sterne erstellen
+    function createMovingStar() {
+      const movingStar = document.createElement('div');
+      movingStar.className = 'moving-star';
+      
+      // Zufällige Startposition (links außerhalb)
+      movingStar.style.left = '-100px';
+      movingStar.style.top = Math.random() * window.innerHeight + 'px';
+      
+      // Zufällige Größe (1-2px)
+      const size = Math.random() * 1 + 1;
+      movingStar.style.width = size + 'px';
+      movingStar.style.height = size + 'px';
+      
+      // Zufällige Animation-Dauer (15-25s)
+      const duration = Math.random() * 10 + 15;
+      movingStar.style.animationDuration = duration + 's';
+      
+      starsContainer.appendChild(movingStar);
+      
+      // Stern nach Animation entfernen
+      setTimeout(() => {
+        if (movingStar.parentNode) {
+          movingStar.parentNode.removeChild(movingStar);
+        }
+      }, duration * 1000);
+    }
+    
+    // Regelmäßig neue bewegliche Sterne erstellen
+    setInterval(createMovingStar, 2000);
+    
+    // Initial einige bewegliche Sterne erstellen
+    for (let i = 0; i < numMovingStars; i++) {
+      setTimeout(createMovingStar, i * 1000);
+    }
+  }
+  
+  // Sterne beim Laden der Seite erstellen
+  createStars();
 </script>
 </body>
 </html>
