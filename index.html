@@ -2,978 +2,214 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>helu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="tja moin leute apo ist auf trocken am start meine freunde" />
-  <meta property="image" content="https://img.maus.bio/raw/20324149.png">
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PC-Basic-Einstellungen – helu</title>
   <style>
-    :root {
-      --glowColor: #5e5e5ecc;
-    }
-
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: 'Satoshi', sans-serif;
-      overflow: hidden;
-      background: #000;
-      color: white;
-      position: relative;
+      box-sizing: border-box;
+      cursor: url('https://cur.cursors-4u.net/black/blb-10/blb979.cur'), auto;
     }
 
-    /* Sterne-Hintergrund */
-    .stars {
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      position: relative;
+      background: black;
+    }
+
+    canvas#stars {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
       z-index: 1;
-    }
-
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 3s infinite;
-    }
-
-    .star:nth-child(odd) {
-      animation-delay: 0s;
-    }
-
-    .star:nth-child(even) {
-      animation-delay: 1.5s;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { 
-        opacity: 0.3; 
-        transform: scale(1);
-      }
-      50% { 
-        opacity: 1; 
-        transform: scale(1.2);
-      }
-    }
-
-    /* Bewegliche Sterne */
-    .moving-star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: moveStar 20s linear infinite;
-    }
-
-    @keyframes moveStar {
-      0% {
-        transform: translateX(-100px) translateY(0px);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateX(calc(100vw + 100px)) translateY(-200px);
-        opacity: 0;
-      }
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(20px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 999;
-    }
-
-    .container-center {
-      position: relative;
-      z-index: 10;
-    }
-
-    .overlay-text {
-      font-size: 2rem;
-      font-weight: bold;
-      text-shadow: 0 0 15px var(--glowColor);
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .container-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .hover-3d {
-      perspective: 1000px;
-    }
-
-    .hover-3d-inner {
-      transition: none;
-      will-change: auto;
-      transform-style: preserve-3d;
-    }
-
-    .overlay-box {
-      backdrop-filter: blur(15px);
-      background: rgba(0, 0, 0, 0.3);
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
       border-radius: 20px;
-      padding: 2rem;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
-      transform: translateY(40px);
-      opacity: 0;
-      transition: all 1s ease;
-      max-width: 600px;
-      width: 90%;
-      margin: 0;
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
     }
 
-    .overlay-box.show {
-      opacity: 1;
-      transform: translateY(0);
+    h1 {
+      font-size: 2.2em;
+      color: #00e6cc;
+      margin-bottom: 20px;
     }
 
-    .glow {
-      text-shadow: 0 0 18px var(--glowColor);
+    h2 {
+      color: #00bbaa;
+      margin-top: 30px;
     }
 
-    .profile-pic {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    ul {
+      margin: 15px 0;
+      padding-left: 20px;
     }
 
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin-top: 20px;
+    li {
+      margin-bottom: 10px;
+      line-height: 1.6;
     }
 
-    .social-icons a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 1.4rem;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+    a {
+      color: inherit;
+      text-decoration: underline dotted;
     }
 
-    .social-icons a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s;
+    a:hover {
+      color: #ffffff;
+      text-decoration: underline solid;
     }
 
-    .social-icons a:hover::before {
-      transform: translateX(100%);
+    code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 6px;
+      border-radius: 6px;
+      font-family: monospace;
     }
 
-    .social-icons a:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* Spezifische Farben für jede Platform */
-    .social-icons a[href*="twitch"]:hover {
-      background: rgba(145, 70, 255, 0.2);
-      border-color: #9146ff;
-      color: #9146ff;
-    }
-
-    .social-icons a[href*="x.com"] {
-      color: #e0e0e0;
-    }
-
-    .social-icons a[href*="x.com"]:hover {
-      background: rgba(0, 0, 0, 0.4);
-      border-color: #fff;
-      color: #fff;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
-
-    .social-icons a[href*="discord"]:hover {
-      background: rgba(88, 101, 242, 0.2);
-      border-color: #5865f2;
-      color: #5865f2;
-    }
-
-    .social-icons a[href*="github"]:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: #fff;
-      color: #fff;
-    }
-
-    .music-player {
-      margin-top: 25px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(15px);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .player-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .player-header img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-    }
-
-    .track-title {
-      white-space: nowrap;
-      overflow: hidden;
-      position: relative;
-      height: 1.2em;
-    }
-
-    .track-title span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scrollText 8s linear infinite;
-    }
-
-    .track-title.paused span {
-      animation-play-state: paused;
-    }
-
-    @keyframes scrollText {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .player-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .player-controls button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-
-    .volume-slider-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    .volume-slider {
-      position: absolute;
-      bottom: 150%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      display: none;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(15px);
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .volume-slider input {
-      width: 100%;
-      -webkit-appearance: none;
-      appearance: none;
-      height: 4px;
-      background: rgba(255,255,255,0.2);
-      outline: none;
-      border-radius: 2px;
-    }
-    
-    .volume-slider input::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #000;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid #fff;
-    }
-    
-    .volume-slider input::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      background: #000;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid #fff;
-    }
-
-    .volume-slider-container:hover .volume-slider {
-      display: block;
-    }
-
-    .progress-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      margin-top: 10px;
-      color: #ccc;
-    }
-
-    .progress-bar {
-      flex: 1;
-      height: 4px;
-      background-color: rgba(255,255,255,0.2);
-      margin: 0 10px;
-      border-radius: 5px;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .progress {
-      height: 100%;
-      background-color: #fff;
-      width: 0%;
-      border-radius: 5px;
-    }
-
-    .cursor {
-      display: inline-block;
-      animation: blink 1s infinite;
-      color: white;
-      font-weight: bold;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-  </style>
-
-  <script>
-    const titleSteps = ["@", "@h", "@he", "@hel", "@helu", ];
-    const stepDuration = 250; // 250ms pro Schritt
-    const totalCycle = (titleSteps.length * 2 - 2) * stepDuration; // Gesamte Zykluszeit
-    
-    function updateTitle() {
-      const now = Date.now();
-      const cyclePosition = (now % totalCycle) / stepDuration;
-      
-      let stepIndex;
-      if (cyclePosition < titleSteps.length) {
-        // Vorwärts: @ → @h → @he → @hel → @helu
-        stepIndex = Math.floor(cyclePosition);
-      } else {
-        // Rückwärts: @helu → @hel → @he → @h → @
-        stepIndex = titleSteps.length - 1 - Math.floor(cyclePosition - titleSteps.length);
+    @media (max-width: 768px) {
+      .content {
+        padding: 20px;
       }
-      
-      document.title = titleSteps[stepIndex];
     }
-    
-    // Sofort aktualisieren und dann alle 250ms
-    updateTitle();
-    setInterval(updateTitle, stepDuration);
-  </script>
-
+  </style>
 </head>
 <body>
+  <canvas id="stars"></canvas>
 
-<!-- Sterne-Hintergrund -->
-<div class="stars" id="stars"></div>
+  <div class="content">
+    <h1>PC-Basic-Einstellungen – helu</h1>
+    <p>Diese Schritte helfen dir, deinen PC grundlegend einzustellen für ein schnelleres und stabileres Windows – einfach & verständlich erklärt.</p>
 
-<div class="overlay" id="entryOverlay">
-  <div class="overlay-text">Enter.</div>
-</div>
+    <div class="section">
+      <h2>✅ 1. BIOS/UEFI-Einstellungen (Das Fundament)</h2>
+      <ul>
+        <li><strong>BIOS-Update:</strong> Vom Hersteller laden und über "EZ Flash" o. ä. installieren.</li>
+        <li><strong>RAM optimieren:</strong> XMP (Intel) oder EXPO (AMD) aktivieren.</li>
+        <li><strong>Resizable BAR:</strong> Aktivieren im BIOS.</li>
+        <li><strong>Lüfterkurve:</strong> Unter "Fan Control" sanft einstellen.</li>
+      </ul>
+    </div>
 
-<div class="container-center">
-  <div class="hover-3d">
-    <div class="overlay-box hover-3d-inner" id="mainContent">
-      <img src="https://i1.sndcdn.com/artworks-Bgqyp7LO8mfDyyfo-EpVzow-t500x500.png" class="profile-pic mb-3">
-      <h2 class="glow">helu</h2>
-      <p class="glow"><span id="typewriter"></span><span class="cursor">|</span></p>
+    <div class="section">
+      <h2>✅ 2. Treiber & wichtige Software (Die Basis)</h2>
+      <ul>
+        <li>Windows- und Store-Updates ausführen.</li>
+        <li>Mainboard-Treiber & Chipsatz von Herstellerseiten laden.</li>
+        <li>Grafiktreiber via <em>NVIDIA App</em> oder <em>AMD Adrenalin</em>.</li>
+        <li><a href="https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/" target="_blank"><strong>Visual C++ All-in-One</strong></a></li>
+        <li>.NET Framework 3.5 aktivieren.</li>
+        <li>Zusätzliche Tools wie Samsung Magician, iCUE nutzen.</li>
+      </ul>
+    </div>
 
-      <div class="social-icons">
-        <a href="https://twitch.tv/heelu_" target="_blank"><i class="fab fa-twitch"></i></a>
-        <a href="https://x.com/heelu_" target="_blank"><i class="fab fa-x-twitter"></i></a>
-        <a href="https://discord.com/users/1010544156285874206" target="_blank"><i class="fab fa-discord"></i></a>
-        <a href="https://github.com/heeelu" target="_blank"><i class="fab fa-github"></i></a>
-      </div>
+    <div class="section">
+      <h2>✅ 3. Windows-Optimierung (Der Feinschliff)</h2>
+      <ul>
+        <li>Anzeigeeinstellungen + Hertz prüfen.</li>
+        <li>NVIDIA-Settings für Leistung optimieren.</li>
+        <li>Mausbeschleunigung deaktivieren.</li>
+        <li>Schnellstart deaktivieren.</li>
+        <li>Autostart-Programme bereinigen.</li>
+        <li>Energieoption: "Ausbalanciert"</li>
+        <li>Unerwünschte Apps deinstallieren.</li>
+        <li>GPU-Hardwarebeschleunigung + Spielmodus aktivieren.</li>
+        <li>Speicher-Integrität bei Bedarf deaktivieren.</li>
+        <li>Datenschutz-Einstellungen anpassen.</li>
+      </ul>
+    </div>
 
-      <div class="music-player mt-4">
-        <div class="player-header">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtZt0Sorpc26GTfXGM9vgMCR9vWhNlcVmtMA&s" alt="Cover">
-          <div class="track-title paused" id="titleScroll">
-            <span>maison margiela - destroy lonelㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ 🎧</span>
-          </div>
-          <div class="player-controls ms-auto">
-            <button id="playPauseBtn"><i class="fas fa-play"></i></button>
-              <div class="volume-slider-container" id="volumeContainer">
-              <button id="volumeBtn"><i class="fas fa-volume-up"></i></button>
-              <div class="volume-slider" id="volumeSlider">
-                  <input type="range" min="0" max="1" step="0.01" id="volumeControl">
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="progress-container">
-          <span id="currentTime">0:00</span>
-          <div class="progress-bar" id="progressBar">
-            <div class="progress" id="progressFill"></div>
-          </div>
-          <span id="duration">0:00</span>
-        </div>
-
-        <audio id="audioPlayer" preload="auto" crossorigin="anonymous" controlsList="nodownload">
-          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/mpeg">
-          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/mp3">
-          <source src="https://files.catbox.moe/s0sb5e.mp3" type="audio/wav">
-          <p>Dein Browser unterstützt das Audio-Element nicht.</p>
-        </audio>
-      </div>
+    <div class="section">
+      <h2>✅ 4. Hinweise & Tools</h2>
+      <ul>
+        <li><strong>X3D CPUs:</strong> Xbox & Game Bar NICHT deinstallieren.</li>
+        <li><strong>Revo Uninstaller:</strong> Programme restlos entfernen.</li>
+        <li><strong>Wöchentliche Wartung:</strong><br>
+          <code>sfc /scannow</code><br>
+          <code>dism /online /cleanup-image /checkhealth</code><br>
+          <code>dism /online /cleanup-image /restorehealth</code>
+        </li>
+        <li><strong>Tägliche Optimierung:</strong> Defragmentierung/Optimierung über Windows-Suche</li>
+      </ul>
     </div>
   </div>
-</div>
 
-<script>
-  const overlay = document.getElementById("entryOverlay");
-  const content = document.getElementById("mainContent");
-  const audio = document.getElementById("audioPlayer");
-  const playPauseBtn = document.getElementById("playPauseBtn");
-  const titleScroll = document.getElementById("titleScroll");
-  const currentTimeDisplay = document.getElementById("currentTime");
-  const durationDisplay = document.getElementById("duration");
-  const progressFill = document.getElementById("progressFill");
-  const progressBar = document.getElementById("progressBar");
-  const volumeControl = document.getElementById("volumeControl");
-
-  // Audio-System für maximale Browser-Kompatibilität
-  let audioInitialized = false;
-  let audioLoadAttempts = 0;
-  const maxLoadAttempts = 3;
-  
-  // Audio-Einstellungen für alle Browser optimieren
-  audio.preload = 'auto';
-  audio.crossOrigin = 'anonymous';
-  audio.defaultMuted = false;
-  audio.volume = 0.6;
-  
-  // Audio-Initialisierung
-  function initializeAudio() {
-    if (audioInitialized) return Promise.resolve();
-    
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error('Audio initialization timeout'));
-      }, 10000);
-      
-      const onCanPlay = () => {
-        clearTimeout(timeout);
-        audioInitialized = true;
-        console.log('Audio erfolgreich initialisiert');
-        resolve();
-      };
-      
-      const onError = (e) => {
-        clearTimeout(timeout);
-        console.warn('Audio-Initialisierung fehlgeschlagen:', e);
-        reject(e);
-      };
-      
-      audio.addEventListener('canplaythrough', onCanPlay, { once: true });
-      audio.addEventListener('canplay', onCanPlay, { once: true });
-      audio.addEventListener('error', onError, { once: true });
-      
-      // Audio laden
-      audio.load();
-    });
-  }
-  
-  overlay.addEventListener("click", async () => {
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
-    content.classList.add("show");
-    
-    setTimeout(async () => {
-      try {
-        // Audio initialisieren falls noch nicht geschehen
-        if (!audioInitialized) {
-          await initializeAudio();
-        }
-        
-        // Audio abspielen
-        audio.muted = false;
-        await audio.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        titleScroll.classList.remove("paused");
-        
-      } catch (error) {
-        console.warn('Audio-Start fehlgeschlagen:', error.message);
-        
-        // Retry-Mechanismus
-        if (audioLoadAttempts < maxLoadAttempts) {
-          audioLoadAttempts++;
-          console.log(`Audio-Retry ${audioLoadAttempts}/${maxLoadAttempts}`);
-          audioInitialized = false;
-          setTimeout(() => {
-            overlay.click();
-          }, 1000);
-        } else {
-          console.error('Audio konnte nach mehreren Versuchen nicht gestartet werden');
-          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          titleScroll.classList.remove("paused");
-        }
-      }
-    }, 600);
-  });
-
-  playPauseBtn.addEventListener("click", async () => {
-    try {
-      if (audio.paused) {
-        // Audio initialisieren falls nötig
-        if (!audioInitialized) {
-          await initializeAudio();
-        }
-        await audio.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        titleScroll.classList.remove("paused");
-      } else {
-        audio.pause();
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        titleScroll.classList.add("paused");
-      }
-    } catch (error) {
-      console.warn('Audio-Playback-Fehler:', error.message);
-      // Fallback: Button-Status zurücksetzen
-      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-      titleScroll.classList.add("paused");
-    }
-  });
-
-  audio.addEventListener("loadedmetadata", () => {
-    if (audio.duration && !isNaN(audio.duration)) {
-      durationDisplay.textContent = formatTime(audio.duration);
-    }
-  });
-
-  // Throttle timeupdate für bessere Performance
-  let lastUpdate = 0;
-  audio.addEventListener("timeupdate", () => {
-    const now = Date.now();
-    if (now - lastUpdate < 100) return; // Max 10fps für UI-Updates
-    lastUpdate = now;
-    
-    if (audio.duration && !isNaN(audio.duration) && audio.currentTime && !isNaN(audio.currentTime)) {
-      currentTimeDisplay.textContent = formatTime(audio.currentTime);
-      const percent = (audio.currentTime / audio.duration) * 100;
-      progressFill.style.width = `${percent}%`;
-    }
-  });
-
-  progressBar.addEventListener("click", (e) => {
-    if (audio.duration && !isNaN(audio.duration)) {
-      const rect = progressBar.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const percent = clickX / rect.width;
-      audio.currentTime = percent * audio.duration;
-    }
-  });
-
-  volumeControl.addEventListener("input", () => {
-    audio.volume = volumeControl.value;
-  });
-
-  // Mute-Funktionalität für Lautsprecher-Button
-  const volumeBtn = document.getElementById("volumeBtn");
-  let isMuted = false;
-  
-  volumeBtn.addEventListener("click", () => {
-    if (isMuted) {
-      // Audio wieder einschalten
-      audio.muted = false;
-      volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-      isMuted = false;
-    } else {
-      // Audio stumm schalten
-      audio.muted = true;
-      volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-      isMuted = true;
-    }
-  });
-
-  function formatTime(seconds) {
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
-</script>
-
-<script>
-  const volumeContainer = document.getElementById("volumeContainer");
-  const volumeSlider = document.getElementById("volumeSlider");
-  let hoverTimeout;
-
-  volumeContainer.addEventListener("mouseenter", () => {
-    clearTimeout(hoverTimeout);
-    volumeSlider.style.display = "block";
-  });
-
-  volumeContainer.addEventListener("mouseleave", () => {
-    hoverTimeout = setTimeout(() => {
-      volumeSlider.style.display = "none";
-    }, 300);
-  });
-
-  volumeSlider.addEventListener("mouseenter", () => {
-    clearTimeout(hoverTimeout);
-  });
-
-  volumeSlider.addEventListener("mouseleave", () => {
-    hoverTimeout = setTimeout(() => {
-      volumeSlider.style.display = "none";
-    }, 300);
-  });
-</script>
-
-<!-- 3D Hover Effekt deaktiviert -->
-<script>
-  const text = "welcome.";
-  const target = document.getElementById("typewriter");
-  let index = 0;
-  let isDeleting = false;
-
-  function typeWriter() {
-    if (!isDeleting && index < text.length) {
-      // Schreiben
-      target.innerHTML += text.charAt(index);
-      index++;
-      setTimeout(typeWriter, 100);
-    } else if (isDeleting && index > 0) {
-      // Löschen
-      target.innerHTML = target.innerHTML.slice(0, -1);
-      index--;
-      setTimeout(typeWriter, 50); // Schneller löschen
-    } else if (!isDeleting && index === text.length) {
-      // Pause bevor gelöscht wird
-      setTimeout(() => {
-        isDeleting = true;
-        typeWriter();
-      }, 2000); // 2 Sekunden Pause
-    } else if (isDeleting && index === 0) {
-      // Pause bevor wieder geschrieben wird
-      setTimeout(() => {
-        isDeleting = false;
-        typeWriter();
-      }, 1000); // 1 Sekunde Pause
-    }
-  }
-
-  // Starte Effekt wenn Overlay weg ist
-  document.getElementById("entryOverlay").addEventListener("click", () => {
-    setTimeout(typeWriter, 700); // Startverzögerung nach Klick
-  });
-</script>
-<script>
-  const joinBtn = document.getElementById("discordJoinBtn");
-  joinBtn.addEventListener("mouseenter", () => {
-    joinBtn.style.transform = "scale(1.1)";
-  });
-  joinBtn.addEventListener("mouseleave", () => {
-    joinBtn.style.transform = "scale(1)";
-  });
-</script>
-<style>
-  body, * {
-    cursor: url('https://raw.githubusercontent.com/archlinux/artwork/master/cursors/archlinux-dark/archlinux-dark-cursor.png') 16 16, auto !important;
-  }
-</style>
-
-<style>
-  /* Anti-Select/Copy/Print */
-  html, body, * {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-    -webkit-touch-callout: none !important;
-  }
-
-  @media print {
-    body { display: none !important; }
-  }
-</style>
-
-<!-- Favicon Animation -->
-<script>
-  const favicon_png= [
-    'https://r2.guns.lol/e1c9d312-3f10-4513-a204-492fe5e83a44.png',
-      ];
-  let image_counter = 0;
-  setInterval(() => {
-    document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(e => e.remove());
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    // Erstelle Data URL für Ziegen-Emoji
-    const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
+  <!-- Starfield Animation Script -->
+  <script>
+    const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
-    ctx.font = '24px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(favicon_emojis[emoji_counter], 16, 16);
-    link.href = canvas.toDataURL();
-    document.head.appendChild(link);
-    emoji_counter = (emoji_counter + 1) % favicon_emojis.length;
-  }, 200);
-</script>
+    let stars = [];
 
-<script>
-  // Interaktionen sperren: Kopieren/Einfügen/Markieren/Drag/Drop
-  ['copy','cut','paste','selectstart','dragstart','drop'].forEach((type) => {
-    document.addEventListener(type, (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    }, true);
-  });
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
 
-  // Zusätzliche Heuristik: Wenn DevTools wahrscheinlich offen sind, Inhalt überdecken
-  (function setupDevtoolsShield(){
-    const createShield = () => {
-      let shield = document.getElementById('antiInspectOverlay');
-      if (!shield) {
-        shield = document.createElement('div');
-        shield.id = 'antiInspectOverlay';
-        shield.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2147483646;color:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;';
-        shield.textContent = '';
-        document.body.appendChild(shield);
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * canvas.width
+        });
       }
-      return shield;
-    };
-
-    const maybeDevtoolsOpen = () => {
-      const threshold = 160; // typische DevTools-Leiste
-      const vertical = window.outerHeight - window.innerHeight > threshold;
-      const horizontal = window.outerWidth - window.innerWidth > threshold;
-      return vertical || horizontal;
-    };
-
-    let active = false;
-    setInterval(() => {
-      const open = maybeDevtoolsOpen();
-      if (open && !active) {
-        createShield().style.display = 'flex';
-        active = true;
-      } else if (!open && active) {
-        const el = document.getElementById('antiInspectOverlay');
-        if (el) el.style.display = 'none';
-        active = false;
-      }
-    }, 600);
-  })();
-</script>
-<!-- (Optional) Live Zahl Simulation -->
-<script>
-  // Simuliere leicht fluktuierende Online-Zahlen
-  setInterval(() => {
-    const baseOnline = 87576;
-    const baseMembers = 259182;
-    document.getElementById("discordOnline").textContent = (baseOnline + Math.floor(Math.random() * 100 - 50)).toLocaleString();
-    document.getElementById("discordMembers").textContent = baseMembers.toLocaleString();
-  }, 4000);
-</script>
-
-<script>
-  // Basis-Schutz: Rechtsklick & übliche DevTools-/Quelltext-Shortcuts blockieren
-  document.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-  });
-
-  document.addEventListener('keydown', (event) => {
-    const key = (event.key || '').toUpperCase();
-
-    // F12 (DevTools)
-    if (key === 'F12') {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
     }
 
-    // Ctrl+Shift+I/J/C (DevTools Varianten)
-    if (event.ctrlKey && event.shiftKey && ['I','J','C'].includes(key)) {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
-
-    // Ctrl+U (Seitenquelltext), Ctrl+S (Speichern), Ctrl+P (Drucken)
-    if (event.ctrlKey && ['U','S','P'].includes(key)) {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
-  }, true);
-
-  // Optional: wiederholter Fokus-Diebstahl von Konsole verhindern (sehr begrenzt wirksam)
-  // Hinweis: Client-seitige Maßnahmen sind umgehbar und bieten keinen echten Schutz.
-</script>
-<script>
-  // Erweiterte Audio-Performance und Fehlerbehandlung
-  audio.addEventListener('error', (e) => {
-    console.warn('Audio-Fehler:', e);
-    audioInitialized = false;
-  });
-  
-  audio.addEventListener('stalled', () => {
-    console.warn('Audio-Stream unterbrochen - versuche Neuladen...');
-    audioInitialized = false;
-    audio.load();
-  });
-  
-  audio.addEventListener('waiting', () => {
-    console.log('Audio buffert...');
-  });
-  
-  audio.addEventListener('canplay', () => {
-    console.log('Audio kann abgespielt werden');
-  });
-  
-  audio.addEventListener('loadstart', () => {
-    console.log('Audio-Laden gestartet');
-  });
-  
-  audio.addEventListener('loadeddata', () => {
-    console.log('Audio-Daten geladen');
-  });
-  
-  audio.addEventListener('progress', () => {
-    console.log('Audio-Laden: ' + Math.round((audio.buffered.end(0) / audio.duration) * 100) + '%');
-  });
-  
-  // Browser-spezifische Optimierungen
-  if (navigator.userAgent.includes('Firefox')) {
-    audio.preload = 'metadata';
-  } else if (navigator.userAgent.includes('Safari')) {
-    audio.preload = 'auto';
-  }
-</script>
-
-<script>
-  // Sterne-Hintergrund generieren
-  function createStars() {
-    const starsContainer = document.getElementById('stars');
-    const numStars = 150;
-    const numMovingStars = 20;
-    
-    // Statische Sterne erstellen
-    for (let i = 0; i < numStars; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      
-      // Zufällige Position
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      
-      // Zufällige Größe (1-3px)
-      const size = Math.random() * 2 + 1;
-      star.style.width = size + 'px';
-      star.style.height = size + 'px';
-      
-      // Zufällige Animation-Delay
-      star.style.animationDelay = Math.random() * 3 + 's';
-      
-      starsContainer.appendChild(star);
-    }
-    
-    // Bewegliche Sterne erstellen
-    function createMovingStar() {
-      const movingStar = document.createElement('div');
-      movingStar.className = 'moving-star';
-      
-      // Zufällige Startposition (links außerhalb)
-      movingStar.style.left = '-100px';
-      movingStar.style.top = Math.random() * window.innerHeight + 'px';
-      
-      // Zufällige Größe (1-2px)
-      const size = Math.random() * 1 + 1;
-      movingStar.style.width = size + 'px';
-      movingStar.style.height = size + 'px';
-      
-      // Zufällige Animation-Dauer (15-25s)
-      const duration = Math.random() * 10 + 15;
-      movingStar.style.animationDuration = duration + 's';
-      
-      starsContainer.appendChild(movingStar);
-      
-      // Stern nach Animation entfernen
-      setTimeout(() => {
-        if (movingStar.parentNode) {
-          movingStar.parentNode.removeChild(movingStar);
+    function moveStars(distance) {
+      for (let star of stars) {
+        star.z -= distance;
+        if (star.z <= 0) {
+          star.z = canvas.width;
+          star.x = Math.random() * canvas.width;
+          star.y = Math.random() * canvas.height;
         }
-      }, duration * 1000);
+      }
     }
-    
-    // Regelmäßig neue bewegliche Sterne erstellen
-    setInterval(createMovingStar, 2000);
-    
-    // Initial einige bewegliche Sterne erstellen
-    for (let i = 0; i < numMovingStars; i++) {
-      setTimeout(createMovingStar, i * 1000);
+
+    function drawStars() {
+      let cx = canvas.width / 2;
+      let cy = canvas.height / 2;
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "white";
+      for (let star of stars) {
+        let k = 128.0 / star.z;
+        let x = (star.x - cx) * k + cx;
+        let y = (star.y - cy) * k + cy;
+        if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) continue;
+        let size = (1 - star.z / canvas.width) * 2;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, 2 * Math.PI);
+        ctx.fill();
+      }
     }
-  }
-  
-  // Sterne beim Laden der Seite erstellen
-  createStars();
-</script>
+
+    function animate() {
+      moveStars(0.4); // Langsamer als vorher
+      drawStars();
+      requestAnimationFrame(animate);
+    }
+
+    createStars(1000);
+    animate();
+  </script>
 </body>
 </html>
