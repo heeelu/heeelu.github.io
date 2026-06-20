@@ -2,125 +2,135 @@
   <meta charset="UTF-8" />  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
   <title>Windows Basic Tweaks – helu</title>  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@800;900&display=swap" rel="stylesheet">  
   <style>    
     :root {      
-      --accent-blue:  #00d2ff;      
-      --accent-green: #00f2fe;      
-      --accent-purple:#7f00ff;
-      --accent-orange:#ff4e50;
-      --winutil-color:#00ff87;
-      --dark-bg:      #0a0f1d;      
-      --card-bg:      rgba(15, 23, 42, 0.65);      
-      --border-color: rgba(255, 255, 255, 0.06);    
+      --bg-dark:      #030712;      
+      --winutil-glow: #00ff87;
+      --border-light: rgba(255, 255, 255, 0.08);
+      --glass-bg:     rgba(10, 15, 30, 0.7);
     }    
     * { margin: 0; padding: 0; box-sizing: border-box; }    
     
     html, body {      
       width: 100%; min-height: 100vh;      
-      background: var(--dark-bg);      
-      font-family: 'Inter', sans-serif;      
-      color: #e2e8f0;      
+      background: var(--bg-dark);      
+      font-family: 'Plus Jakarta Sans', sans-serif;      
+      color: #f3f4f6;      
       overflow-x: hidden;    
     }    
     
-    /* ─── MODERN ANAMORPHIC BACKGROUND ─── */    
-    .bg-gradient {      
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;      
-      background:       
-        radial-gradient(circle at 10% 20%, rgba(127, 0, 255, 0.15) 0%, transparent 40%),      
-        radial-gradient(circle at 90% 80%, rgba(0, 210, 255, 0.12) 0%, transparent 45%),      
-        linear-gradient(145deg, #060913 0%, #0d1527 100%);    
-    }    
+    /* ─── LIQUID AMBIENT BACKGROUND ─── */    
+    .ambient-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      border-radius: 50%; filter: blur(60px);
+      animation: floatBlob 20s infinite alternate ease-in-out;
+    }
+    .blob-1 { top: -10%; left: -10%; animation-delay: 0s; }
+    .blob-2 { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(0, 242, 254, 0.12) 0%, transparent 70%); animation-duration: 25s; animation-delay: -5s; }
+    @keyframes floatBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(80px, 50px) scale(1.15); }
+    }
     .bg-grid {      
-      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;      
-      background-size: 40px 40px;      
-      background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px);    
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.15;      
+      background-size: 50px 50px;      
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), 
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);    
     }    
     
     /* ─── HEADER ─── */    
-    header { position: relative; z-index: 10; text-align: center; padding: 70px 20px 45px; }    
+    header { position: relative; z-index: 10; text-align: center; padding: 80px 20px 50px; }    
     .header-tag {      
-      font-family: 'JetBrains Mono', monospace; font-size: .78em;      
-      color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase;      
-      margin-bottom: 12px; font-weight: 500;    
+      font-family: 'JetBrains Mono', monospace; font-size: .8em;      
+      color: #6366f1; letter-spacing: 4px; text-transform: uppercase;      
+      margin-bottom: 16px; font-weight: 600;
     }    
     h1 {      
       font-family: 'Orbitron', sans-serif;      
-      font-size: clamp(1.8em, 5vw, 3.2em);      
-      font-weight: 900; text-transform: uppercase; letter-spacing: 4px; line-height: 1.2;      
-      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);      
+      font-size: clamp(2em, 6vw, 3.8em);      
+      font-weight: 900; text-transform: uppercase; letter-spacing: 6px; line-height: 1.2;      
+      background: linear-gradient(135deg, #fff 40%, #93c5fd 100%);      
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;      
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));    
+      filter: drop-shadow(0 0 30px rgba(99,102,241,0.2));
     }    
     .subtitle {      
-      font-family: 'JetBrains Mono', monospace; font-size: .9em;      
-      color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-top: 12px;    
+      font-family: 'JetBrains Mono', monospace; font-size: .95em;      
+      color: rgba(255,255,255,0.5); letter-spacing: 3px; margin-top: 14px;    
     }    
     .header-line {      
-      width: 180px; height: 2px; margin: 25px auto 0;      
-      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);    
+      width: 240px; height: 2px; margin: 28px auto 0;      
+      background: linear-gradient(90deg, transparent, #6366f1, #00f2fe, transparent);    
+      background-size: 200% 100%;
+      animation: gradientMove 4s infinite linear;
     }    
+    @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     
     /* ─── WRAPPER ─── */    
     .wrapper {      
       position: relative; z-index: 10;      
       max-width: 1200px; margin: 0 auto;      
       padding: 0 20px 80px;      
-      display: flex; flex-direction: column; gap: 24px;    
+      display: flex; flex-direction: column; gap: 28px;    
     }    
     
     /* ─── WINUTIL BANNER ─── */    
     .winutil-banner {      
-      background: linear-gradient(135deg, rgba(2, 44, 22, 0.85), rgba(4, 24, 15, 0.75));      
-      border: 1px solid rgba(0, 255, 135, 0.25); border-radius: 16px;      
-      padding: 24px 28px;      
-      display: flex; align-items: center; flex-wrap: wrap; gap: 20px;      
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);      
-      backdrop-filter: blur(12px);      
+      background: linear-gradient(135deg, rgba(2, 48, 32, 0.7), rgba(4, 28, 20, 0.6));      
+      border: 1px solid rgba(0, 255, 135, 0.3); border-radius: 20px;      
+      padding: 26px 32px;      
+      display: flex; align-items: center; flex-wrap: wrap; gap: 24px;      
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);      
+      backdrop-filter: blur(20px);      
       opacity: 0; animation: fadeUp .6s cubic-bezier(0.16, 1, 0.3, 1) forwards;    
     }    
-    .winutil-icon { font-size: 2.2em; filter: drop-shadow(0 0 10px rgba(0,255,135,0.4)); flex-shrink: 0; }    
+    .winutil-icon { font-size: 2.4em; filter: drop-shadow(0 0 15px var(--winutil-glow)); flex-shrink: 0; }    
     .winutil-text { flex: 1; min-width: 240px; }    
     .winutil-text h3 {      
-      font-family: 'Orbitron', sans-serif; font-size: .95em;      
-      color: var(--winutil-color); letter-spacing: 1.5px; margin-bottom: 6px;    
+      font-family: 'Orbitron', sans-serif; font-size: 1em;      
+      color: var(--winutil-glow); letter-spacing: 2px; margin-bottom: 6px;    
     }    
-    .winutil-text p { font-size: .95em; color: rgba(200,250,215,0.8); line-height: 1.6; }    
+    .winutil-text p { font-size: .95em; color: rgba(205,250,225,0.85); line-height: 1.6; }    
     
     .cmd-row {      
-      display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;    
+      display: flex; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap;    
     }    
     .cmd-box {      
-      font-family: 'JetBrains Mono', monospace; font-size: .85em;      
-      background: rgba(0,0,0,0.4); border: 1px solid rgba(0, 255, 135, 0.2);      
-      color: var(--winutil-color); padding: 8px 14px; border-radius: 8px;      
-      user-select: all; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);    
+      font-family: 'JetBrains Mono', monospace; font-size: .88em;      
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(0, 255, 135, 0.25);      
+      color: var(--winutil-glow); padding: 10px 16px; border-radius: 10px;      
+      user-select: all; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);    
     }    
     .copy-btn {      
-      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
-      background: rgba(0, 255, 135, 0.06); border: 1px solid rgba(0, 255, 135, 0.4);      
-      color: var(--winutil-color); padding: 8px 14px; border-radius: 8px;      
-      cursor: pointer; letter-spacing: 0.5px; font-weight: 500; transition: all .25s; white-space: nowrap;    
+      font-family: 'JetBrains Mono', monospace; font-size: .78em;      
+      background: rgba(0, 255, 135, 0.08); border: 1px solid rgba(0, 255, 135, 0.5);      
+      color: var(--winutil-glow); padding: 10px 16px; border-radius: 10px;      
+      cursor: pointer; font-weight: 600; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;    
     }    
-    .copy-btn:hover { background: rgba(0, 255, 135, 0.15); border-color: var(--winutil-color); box-shadow: 0 0 15px rgba(0,255,135,0.2); }    
-    .copy-btn.copied { color: #fff; border-color: #fff; background: rgba(255,255,255,0.1); }    
+    .copy-btn:hover { background: rgba(0, 255, 135, 0.2); border-color: var(--winutil-glow); box-shadow: 0 0 20px rgba(0,255,135,0.3); transform: translateY(-1px); }    
+    .copy-btn.copied { color: #fff; border-color: #fff; background: rgba(255,255,255,0.15); }    
     
     .winutil-open {      
       margin-left: auto; flex-shrink: 0;      
-      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
+      font-family: 'JetBrains Mono', monospace; font-size: .78em;      
       color: #fff; border: 1px solid rgba(255,255,255,0.15);      
-      padding: 10px 18px; border-radius: 8px; letter-spacing: 1px;      
+      padding: 12px 22px; border-radius: 10px; letter-spacing: 1px; font-weight: 500;     
       text-decoration: none; transition: all .25s;      
-      background: rgba(255,255,255,0.03);    
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(5px);
     }    
-    .winutil-open:hover { background: #fff; color: #000; box-shadow: 0 5px 15px rgba(255,255,255,0.1); }    
+    .winutil-open:hover { background: #fff; color: #030712; box-shadow: 0 10px 25px rgba(255,255,255,0.15); transform: translateY(-1px); }    
     
     /* ─── CARDS GRID ─── */    
     .sections-grid {      
       display: grid;      
       grid-template-columns: repeat(2, 1fr);      
-      gap: 24px;      
+      gap: 28px;      
       align-items: start;    
     }    
     @media (max-width: 760px) {      
@@ -129,76 +139,77 @@
     }    
     
     .card {      
-      background: var(--card-bg);      
-      border: 1px solid var(--border-color);      
-      border-radius: 20px; padding: 30px;      
-      backdrop-filter: blur(16px);      
+      background: var(--glass-bg);      
+      border: 1px solid var(--border-light);      
+      border-radius: 24px; padding: 32px;      
+      backdrop-filter: blur(20px);      
       position: relative; overflow: hidden;      
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.05);      
-      transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), border-color .3s, box-shadow .3s;      
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05);      
+      transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1), border-color .4s, box-shadow .4s;      
       opacity: 0; animation: fadeUp .6s cubic-bezier(0.16, 1, 0.3, 1) forwards;    
     }    
-    .card:nth-child(1) { animation-delay: .08s; }    
-    .card:nth-child(2) { animation-delay: .14s; }    
-    .card:nth-child(3) { animation-delay: .20s; }    
+    .card:nth-child(1) { animation-delay: .05s; }    
+    .card:nth-child(2) { animation-delay: .12s; }    
+    .card:nth-child(3) { animation-delay: .19s; }    
     .card:nth-child(4) { animation-delay: .26s; }    
+    
     .card:hover {       
-      transform: translateY(-4px);       
-      border-color: var(--accent-hover);      
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25), 0 0 30px var(--shadow-glow);    
+      transform: translateY(-6px) scale(1.01);       
+      border-color: var(--glow-color);      
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px var(--glow-shadow);    
     }    
     
-    .card.bios   { --accent-hover: rgba(255, 78, 80, 0.3);   --shadow-glow: rgba(255, 78, 80, 0.04); }    
-    .card.driver { --accent-hover: rgba(0, 210, 255, 0.3);   --shadow-glow: rgba(0, 210, 255, 0.04); }    
-    .card.win    { --accent-hover: rgba(0, 255, 135, 0.25);  --shadow-glow: rgba(0, 255, 135, 0.04); }    
-    .card.tools  { --accent-hover: rgba(127, 0, 255, 0.3);   --shadow-glow: rgba(127, 0, 255, 0.04); }    
+    .card.bios   { --glow-color: rgba(255, 107, 107, 0.4);  --glow-shadow: rgba(255, 107, 107, 0.06); }    
+    .card.driver { --glow-color: rgba(0, 210, 255, 0.4);    --glow-shadow: rgba(0, 210, 255, 0.06); }    
+    .card.win    { --glow-color: rgba(0, 242, 158, 0.35);   --glow-shadow: rgba(0, 242, 158, 0.06); }    
+    .card.tools  { --glow-color: rgba(168, 85, 247, 0.4);   --glow-shadow: rgba(168, 85, 247, 0.06); }    
     
     .card-number {      
-      position: absolute; top: 22px; right: 26px;      
-      font-family: 'Orbitron', sans-serif; font-size: 2.6em; font-weight: 900;      
-      opacity: .03; color: #fff; line-height: 1; pointer-events: none; user-select: none;    
+      position: absolute; top: 24px; right: 28px;      
+      font-family: 'Orbitron', sans-serif; font-size: 3.5em; font-weight: 900;      
+      opacity: .02; color: #fff; line-height: 1; pointer-events: none; user-select: none;    
     }    
     
     .card h2 {      
-      font-family: 'Orbitron', sans-serif; font-size: .95em; font-weight: 700;      
-      letter-spacing: 2px; text-transform: uppercase;      
-      display: flex; align-items: center; gap: 12px;      
-      margin-bottom: 22px; padding-bottom: 14px;      
+      font-family: 'Orbitron', sans-serif; font-size: 1.05em; font-weight: 800;      
+      letter-spacing: 2.5px; text-transform: uppercase;      
+      display: flex; align-items: center; gap: 14px;      
+      margin-bottom: 24px; padding-bottom: 16px;      
       border-bottom: 1px solid rgba(255,255,255,0.06);    
     }    
-    .card.bios   h2 { color: #ff5e62; }    
-    .card.driver h2 { color: #00b4db; }    
-    .card.win    h2 { color: #00f2fe; }    
-    .card.tools  h2 { color: #b06ab3; }    
-    .card h2 .icon { font-size: 1.15em; opacity: 0.9; }    
+    .card.bios   h2 { color: #ff6b6b; text-shadow: 0 0 15px rgba(255,107,107,0.2); }    
+    .card.driver h2 { color: #00d2ff; text-shadow: 0 0 15px rgba(0,210,255,0.2); }    
+    .card.win    h2 { color: #00f2fe; text-shadow: 0 0 15px rgba(0,242,254,0.2); }    
+    .card.tools  h2 { color: #c084fc; text-shadow: 0 0 15px rgba(192,132,252,0.2); }    
+    .card h2 .icon { font-size: 1.2em; }    
     
     /* ─── LIST ITEMS ─── */    
-    ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }    
+    ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }    
     
     li {      
-      display: flex; align-items: flex-start; gap: 12px;      
+      display: flex; align-items: flex-start; gap: 14px;      
       font-size: .98em; line-height: 1.6;      
-      padding: 10px 14px; border-radius: 10px;      
+      padding: 12px 16px; border-radius: 14px;      
       background: rgba(255,255,255,0.02);      
-      border: 1px solid rgba(255,255,255,0.02);      
-      transition: background .2s, border-color .2s, transform .2s;    
+      border: 1px solid rgba(255,255,255,0.01);      
+      transition: background .25s, border-color .25s, transform .2s;    
     }    
-    li:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.05); transform: translateX(2px); }    
+    li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.04); transform: translateX(3px); }    
     
     li .bullet {      
-      flex-shrink: 0; font-size: 1.1em; line-height: 1.4; font-weight: 500;    
+      flex-shrink: 0; font-size: 1.2em; line-height: 1.3; font-weight: 600;    
     }    
-    .card.bios   li .bullet { color: #ff5e62; }    
-    .card.driver li .bullet { color: #00b4db; }    
+    .card.bios   li .bullet { color: #ff6b6b; }    
+    .card.driver li .bullet { color: #00d2ff; }    
     .card.win    li .bullet { color: #00f2fe; }    
-    .card.tools  li .bullet { color: #b06ab3; }    
+    .card.tools  li .bullet { color: #c084fc; }    
     
     strong { color: #fff; font-weight: 600; }    
     
     a.link {      
       color: #00d2ff; text-decoration: none;      
-      border-bottom: 1px dotted rgba(0,210,255,0.4);      
-      transition: color .18s, border-color .18s;    
+      border-bottom: 1px dotted rgba(0,210,255,0.5);      
+      transition: color .2s, border-color .2s;    
     }    
     a.link:hover { color: #fff; border-color: #fff; }    
     a.link::after { content: ' ↗'; font-size: .8em; opacity: 0.5; }    
@@ -208,82 +219,86 @@
       border-bottom: 1px dashed rgba(255,255,255,0.3); }    
     [data-tip]::after {      
       content: attr(data-tip);      
-      position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%);      
-      background: #0f172a; border: 1px solid rgba(255,255,255,0.1);      
-      color: #e2e8f0; font-family: 'Inter', sans-serif; font-size: .82em;      
-      padding: 8px 12px; border-radius: 8px; white-space: nowrap;      
-      pointer-events: none; opacity: 0; transition: transform .2s, opacity .2s; z-index: 99;      
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);    
+      position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(4px);      
+      background: #0b0f19; border: 1px solid rgba(255,255,255,0.1);      
+      color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .85em;      
+      padding: 10px 14px; border-radius: 10px; white-space: nowrap;      
+      pointer-events: none; opacity: 0; transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1), opacity .25s; z-index: 99;      
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5);    
     }    
-    [data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(-2px); }    
+    [data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }    
     
     /* ─── TERMINAL BLOCK ─── */    
     .terminal {      
-      margin-top: 12px;      
-      background: rgba(5, 8, 16, 0.85); border: 1px solid rgba(255,255,255,0.06);      
-      border-left: 3px solid #b06ab3; border-radius: 10px;      
-      padding: 14px 16px; font-family: 'JetBrains Mono', monospace;      
-      font-size: .82em; color: #cbd5e1; line-height: 2;      
-      position: relative; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);    
+      margin-top: 14px;      
+      background: rgba(3, 7, 18, 0.9); border: 1px solid rgba(255,255,255,0.05);      
+      border-left: 3px solid #c084fc; border-radius: 12px;      
+      padding: 16px 18px; font-family: 'JetBrains Mono', monospace;      
+      font-size: .84em; color: #e2e8f0; line-height: 2;      
+      position: relative; box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);    
     }    
-    .terminal .ps { color: rgba(176, 106, 179, 0.5); margin-right: 8px; }    
+    .terminal .ps { color: rgba(192, 132, 252, 0.4); margin-right: 10px; }    
     .terminal .copy-all {      
-      position: absolute; top: 10px; right: 10px;      
-      font-family: 'JetBrains Mono', monospace; font-size: .72em;      
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);      
-      color: #94a3b8; padding: 4px 10px; border-radius: 6px;      
+      position: absolute; top: 12px; right: 12px;      
+      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);      
+      color: #94a3b8; padding: 5px 12px; border-radius: 8px;      
       cursor: pointer; transition: all .2s;    
     }    
-    .terminal .copy-all:hover { background: rgba(255,255,255,0.1); color: #fff; }    
+    .terminal .copy-all:hover { background: rgba(255,255,255,0.12); color: #fff; }    
     
     code {      
-      font-family: 'JetBrains Mono', monospace; font-size: .85em;      
-      background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);      
-      padding: 2px 6px; border-radius: 5px; color: #38bdf8;    
+      font-family: 'JetBrains Mono', monospace; font-size: .88em;      
+      background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08);      
+      padding: 2px 8px; border-radius: 6px; color: #38bdf8;    
     }    
     
     .warn {      
       display: inline-block;      
-      background: rgba(255,78,80,0.1); border: 1px solid rgba(255,78,80,0.25);      
-      color: #ff6b6b; font-size: .75em; padding: 2px 6px; border-radius: 5px;      
+      background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3);      
+      color: #f87171; font-size: .78em; padding: 2px 8px; border-radius: 6px;      
       font-family: 'JetBrains Mono', monospace; font-weight: 500; margin-left: 6px;    
     }    
     
     /* ─── STATUS BAR ─── */    
     .statusbar {      
       position: relative; z-index: 10;      
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;      
-      padding: 10px 20px 60px;      
-      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
-      color: rgba(255,255,255,0.25); letter-spacing: 1px;    
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 35px;      
+      padding: 20px 20px 60px;      
+      font-family: 'JetBrains Mono', monospace; font-size: .78em;      
+      color: rgba(255,255,255,0.3); letter-spacing: 1.5px;    
     }    
-    .statusbar span { display: flex; align-items: center; gap: 6px; }    
-    .statusbar span::before { content: '●'; color: var(--accent-blue); font-size: 0.8em; }    
-    .statusbar span:nth-child(2)::before { color: var(--winutil-color); }    
-    .statusbar span:nth-child(3)::before { color: var(--accent-purple); }
+    .statusbar span { display: flex; align-items: center; gap: 8px; }    
+    .statusbar span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 10px #6366f1; }    
+    .statusbar span:nth-child(2)::before { background: var(--winutil-glow); box-shadow: 0 0 10px var(--winutil-glow); }    
+    .statusbar span:nth-child(3)::before { background: #c084fc; box-shadow: 0 0 10px #c084fc; }
     
-    ::-webkit-scrollbar { width: 6px; }    
-    ::-webkit-scrollbar-track { background: #060913; }    
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }    
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }    
+    ::-webkit-scrollbar { width: 8px; }    
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }    
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; border: 2px solid var(--bg-dark); }    
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }    
     
     @keyframes fadeUp {      
-      from { opacity: 0; transform: translateY(16px); }      
+      from { opacity: 0; transform: translateY(20px); }      
       to   { opacity: 1; transform: translateY(0); }    
     }  
   </style></head><body>
 
-<div class="bg-gradient"></div>
+<div class="ambient-bg">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+</div>
 <div class="bg-grid"></div>
 
 <header>  
-  <div class="header-tag">[ System Configuration Guide v2.0 ]</div>  
+  <div class="header-tag"></div>  
   <h1>Windows Basic Tweaks</h1>  
-  <div class="subtitle">Linus</div>  
+  <div class="subtitle">helu</div>  
   <div class="header-line"></div>
 </header>
 
 <div class="wrapper">
+  <!-- WINUTIL BANNER -->  
   <div class="winutil-banner">    
     <div class="winutil-icon">⚡</div>    
     <div class="winutil-text">      
@@ -298,6 +313,7 @@
   </div>  
   
   <div class="sections-grid">
+    <!-- ① BIOS -->    
     <div class="card bios">      
       <div class="card-number">01</div>      
       <h2><span class="icon">🔧</span>BIOS / UEFI</h2>      
@@ -321,6 +337,7 @@
       </ul>    
     </div>    
     
+    <!-- ② TREIBER -->    
     <div class="card driver">      
       <div class="card-number">02</div>      
       <h2><span class="icon">📦</span>Treiber &amp; Software</h2>      
@@ -352,6 +369,7 @@
       </ul>    
     </div>    
     
+    <!-- ③ WINDOWS -->    
     <div class="card win">      
       <div class="card-number">03</div>      
       <h2><span class="icon">🖥️</span>Windows-Optimierung</h2>      
@@ -391,6 +409,7 @@
       </ul>    
     </div>    
     
+    <!-- ④ TOOLS & WARTUNG -->    
     <div class="card tools">      
       <div class="card-number">04</div>      
       <h2><span class="icon">🛠️</span>Tools &amp; Wartung</h2>      
@@ -425,9 +444,9 @@
 </div>
 
 <div class="statusbar">  
-  <span>SYSTEM READY</span>  
-  <span>OPTIMIZED</span>  
-  <span>TWEAKS LOADED</span>
+  <span></span>  
+  <span></span>  
+  <span></span>
 </div>
 
 <script>
