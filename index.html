@@ -1,215 +1,452 @@
+<!DOCTYPE html><html lang="de"><head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+  <title>Windows Basic Tweaks – Linus</title>  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">  
+  <style>    
+    :root {      
+      --accent-blue:  #00d2ff;      
+      --accent-green: #00f2fe;      
+      --accent-purple:#7f00ff;
+      --accent-orange:#ff4e50;
+      --winutil-color:#00ff87;
+      --dark-bg:      #0a0f1d;      
+      --card-bg:      rgba(15, 23, 42, 0.65);      
+      --border-color: rgba(255, 255, 255, 0.06);    
+    }    
+    * { margin: 0; padding: 0; box-sizing: border-box; }    
+    
+    html, body {      
+      width: 100%; min-height: 100vh;      
+      background: var(--dark-bg);      
+      font-family: 'Inter', sans-serif;      
+      color: #e2e8f0;      
+      overflow-x: hidden;    
+    }    
+    
+    /* ─── MODERN ANAMORPHIC BACKGROUND ─── */    
+    .bg-gradient {      
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;      
+      background:       
+        radial-gradient(circle at 10% 20%, rgba(127, 0, 255, 0.15) 0%, transparent 40%),      
+        radial-gradient(circle at 90% 80%, rgba(0, 210, 255, 0.12) 0%, transparent 45%),      
+        linear-gradient(145deg, #060913 0%, #0d1527 100%);    
+    }    
+    .bg-grid {      
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;      
+      background-size: 40px 40px;      
+      background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px);    
+    }    
+    
+    /* ─── HEADER ─── */    
+    header { position: relative; z-index: 10; text-align: center; padding: 70px 20px 45px; }    
+    .header-tag {      
+      font-family: 'JetBrains Mono', monospace; font-size: .78em;      
+      color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase;      
+      margin-bottom: 12px; font-weight: 500;    
+    }    
+    h1 {      
+      font-family: 'Orbitron', sans-serif;      
+      font-size: clamp(1.8em, 5vw, 3.2em);      
+      font-weight: 900; text-transform: uppercase; letter-spacing: 4px; line-height: 1.2;      
+      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);      
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;      
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));    
+    }    
+    .subtitle {      
+      font-family: 'JetBrains Mono', monospace; font-size: .9em;      
+      color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-top: 12px;    
+    }    
+    .header-line {      
+      width: 180px; height: 2px; margin: 25px auto 0;      
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);    
+    }    
+    
+    /* ─── WRAPPER ─── */    
+    .wrapper {      
+      position: relative; z-index: 10;      
+      max-width: 1200px; margin: 0 auto;      
+      padding: 0 20px 80px;      
+      display: flex; flex-direction: column; gap: 24px;    
+    }    
+    
+    /* ─── WINUTIL BANNER ─── */    
+    .winutil-banner {      
+      background: linear-gradient(135deg, rgba(2, 44, 22, 0.85), rgba(4, 24, 15, 0.75));      
+      border: 1px solid rgba(0, 255, 135, 0.25); border-radius: 16px;      
+      padding: 24px 28px;      
+      display: flex; align-items: center; flex-wrap: wrap; gap: 20px;      
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);      
+      backdrop-filter: blur(12px);      
+      opacity: 0; animation: fadeUp .6s cubic-bezier(0.16, 1, 0.3, 1) forwards;    
+    }    
+    .winutil-icon { font-size: 2.2em; filter: drop-shadow(0 0 10px rgba(0,255,135,0.4)); flex-shrink: 0; }    
+    .winutil-text { flex: 1; min-width: 240px; }    
+    .winutil-text h3 {      
+      font-family: 'Orbitron', sans-serif; font-size: .95em;      
+      color: var(--winutil-color); letter-spacing: 1.5px; margin-bottom: 6px;    
+    }    
+    .winutil-text p { font-size: .95em; color: rgba(200,250,215,0.8); line-height: 1.6; }    
+    
+    .cmd-row {      
+      display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;    
+    }    
+    .cmd-box {      
+      font-family: 'JetBrains Mono', monospace; font-size: .85em;      
+      background: rgba(0,0,0,0.4); border: 1px solid rgba(0, 255, 135, 0.2);      
+      color: var(--winutil-color); padding: 8px 14px; border-radius: 8px;      
+      user-select: all; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);    
+    }    
+    .copy-btn {      
+      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
+      background: rgba(0, 255, 135, 0.06); border: 1px solid rgba(0, 255, 135, 0.4);      
+      color: var(--winutil-color); padding: 8px 14px; border-radius: 8px;      
+      cursor: pointer; letter-spacing: 0.5px; font-weight: 500; transition: all .25s; white-space: nowrap;    
+    }    
+    .copy-btn:hover { background: rgba(0, 255, 135, 0.15); border-color: var(--winutil-color); box-shadow: 0 0 15px rgba(0,255,135,0.2); }    
+    .copy-btn.copied { color: #fff; border-color: #fff; background: rgba(255,255,255,0.1); }    
+    
+    .winutil-open {      
+      margin-left: auto; flex-shrink: 0;      
+      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
+      color: #fff; border: 1px solid rgba(255,255,255,0.15);      
+      padding: 10px 18px; border-radius: 8px; letter-spacing: 1px;      
+      text-decoration: none; transition: all .25s;      
+      background: rgba(255,255,255,0.03);    
+    }    
+    .winutil-open:hover { background: #fff; color: #000; box-shadow: 0 5px 15px rgba(255,255,255,0.1); }    
+    
+    /* ─── CARDS GRID ─── */    
+    .sections-grid {      
+      display: grid;      
+      grid-template-columns: repeat(2, 1fr);      
+      gap: 24px;      
+      align-items: start;    
+    }    
+    @media (max-width: 760px) {      
+      .sections-grid { grid-template-columns: 1fr; }      
+      .winutil-open { margin-left: 0; width: 100%; text-align: center; }    
+    }    
+    
+    .card {      
+      background: var(--card-bg);      
+      border: 1px solid var(--border-color);      
+      border-radius: 20px; padding: 30px;      
+      backdrop-filter: blur(16px);      
+      position: relative; overflow: hidden;      
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.05);      
+      transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), border-color .3s, box-shadow .3s;      
+      opacity: 0; animation: fadeUp .6s cubic-bezier(0.16, 1, 0.3, 1) forwards;    
+    }    
+    .card:nth-child(1) { animation-delay: .08s; }    
+    .card:nth-child(2) { animation-delay: .14s; }    
+    .card:nth-child(3) { animation-delay: .20s; }    
+    .card:nth-child(4) { animation-delay: .26s; }    
+    .card:hover {       
+      transform: translateY(-4px);       
+      border-color: var(--accent-hover);      
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25), 0 0 30px var(--shadow-glow);    
+    }    
+    
+    .card.bios   { --accent-hover: rgba(255, 78, 80, 0.3);   --shadow-glow: rgba(255, 78, 80, 0.04); }    
+    .card.driver { --accent-hover: rgba(0, 210, 255, 0.3);   --shadow-glow: rgba(0, 210, 255, 0.04); }    
+    .card.win    { --accent-hover: rgba(0, 255, 135, 0.25);  --shadow-glow: rgba(0, 255, 135, 0.04); }    
+    .card.tools  { --accent-hover: rgba(127, 0, 255, 0.3);   --shadow-glow: rgba(127, 0, 255, 0.04); }    
+    
+    .card-number {      
+      position: absolute; top: 22px; right: 26px;      
+      font-family: 'Orbitron', sans-serif; font-size: 2.6em; font-weight: 900;      
+      opacity: .03; color: #fff; line-height: 1; pointer-events: none; user-select: none;    
+    }    
+    
+    .card h2 {      
+      font-family: 'Orbitron', sans-serif; font-size: .95em; font-weight: 700;      
+      letter-spacing: 2px; text-transform: uppercase;      
+      display: flex; align-items: center; gap: 12px;      
+      margin-bottom: 22px; padding-bottom: 14px;      
+      border-bottom: 1px solid rgba(255,255,255,0.06);    
+    }    
+    .card.bios   h2 { color: #ff5e62; }    
+    .card.driver h2 { color: #00b4db; }    
+    .card.win    h2 { color: #00f2fe; }    
+    .card.tools  h2 { color: #b06ab3; }    
+    .card h2 .icon { font-size: 1.15em; opacity: 0.9; }    
+    
+    /* ─── LIST ITEMS ─── */    
+    ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }    
+    
+    li {      
+      display: flex; align-items: flex-start; gap: 12px;      
+      font-size: .98em; line-height: 1.6;      
+      padding: 10px 14px; border-radius: 10px;      
+      background: rgba(255,255,255,0.02);      
+      border: 1px solid rgba(255,255,255,0.02);      
+      transition: background .2s, border-color .2s, transform .2s;    
+    }    
+    li:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.05); transform: translateX(2px); }    
+    
+    li .bullet {      
+      flex-shrink: 0; font-size: 1.1em; line-height: 1.4; font-weight: 500;    
+    }    
+    .card.bios   li .bullet { color: #ff5e62; }    
+    .card.driver li .bullet { color: #00b4db; }    
+    .card.win    li .bullet { color: #00f2fe; }    
+    .card.tools  li .bullet { color: #b06ab3; }    
+    
+    strong { color: #fff; font-weight: 600; }    
+    
+    a.link {      
+      color: #00d2ff; text-decoration: none;      
+      border-bottom: 1px dotted rgba(0,210,255,0.4);      
+      transition: color .18s, border-color .18s;    
+    }    
+    a.link:hover { color: #fff; border-color: #fff; }    
+    a.link::after { content: ' ↗'; font-size: .8em; opacity: 0.5; }    
+    
+    /* ─── TOOLTIP ─── */    
+    [data-tip] { position: relative; cursor: help;      
+      border-bottom: 1px dashed rgba(255,255,255,0.3); }    
+    [data-tip]::after {      
+      content: attr(data-tip);      
+      position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%);      
+      background: #0f172a; border: 1px solid rgba(255,255,255,0.1);      
+      color: #e2e8f0; font-family: 'Inter', sans-serif; font-size: .82em;      
+      padding: 8px 12px; border-radius: 8px; white-space: nowrap;      
+      pointer-events: none; opacity: 0; transition: transform .2s, opacity .2s; z-index: 99;      
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);    
+    }    
+    [data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(-2px); }    
+    
+    /* ─── TERMINAL BLOCK ─── */    
+    .terminal {      
+      margin-top: 12px;      
+      background: rgba(5, 8, 16, 0.85); border: 1px solid rgba(255,255,255,0.06);      
+      border-left: 3px solid #b06ab3; border-radius: 10px;      
+      padding: 14px 16px; font-family: 'JetBrains Mono', monospace;      
+      font-size: .82em; color: #cbd5e1; line-height: 2;      
+      position: relative; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);    
+    }    
+    .terminal .ps { color: rgba(176, 106, 179, 0.5); margin-right: 8px; }    
+    .terminal .copy-all {      
+      position: absolute; top: 10px; right: 10px;      
+      font-family: 'JetBrains Mono', monospace; font-size: .72em;      
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);      
+      color: #94a3b8; padding: 4px 10px; border-radius: 6px;      
+      cursor: pointer; transition: all .2s;    
+    }    
+    .terminal .copy-all:hover { background: rgba(255,255,255,0.1); color: #fff; }    
+    
+    code {      
+      font-family: 'JetBrains Mono', monospace; font-size: .85em;      
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);      
+      padding: 2px 6px; border-radius: 5px; color: #38bdf8;    
+    }    
+    
+    .warn {      
+      display: inline-block;      
+      background: rgba(255,78,80,0.1); border: 1px solid rgba(255,78,80,0.25);      
+      color: #ff6b6b; font-size: .75em; padding: 2px 6px; border-radius: 5px;      
+      font-family: 'JetBrains Mono', monospace; font-weight: 500; margin-left: 6px;    
+    }    
+    
+    /* ─── STATUS BAR ─── */    
+    .statusbar {      
+      position: relative; z-index: 10;      
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;      
+      padding: 10px 20px 60px;      
+      font-family: 'JetBrains Mono', monospace; font-size: .75em;      
+      color: rgba(255,255,255,0.25); letter-spacing: 1px;    
+    }    
+    .statusbar span { display: flex; align-items: center; gap: 6px; }    
+    .statusbar span::before { content: '●'; color: var(--accent-blue); font-size: 0.8em; }    
+    .statusbar span:nth-child(2)::before { color: var(--winutil-color); }    
+    .statusbar span:nth-child(3)::before { color: var(--accent-purple); }
+    
+    ::-webkit-scrollbar { width: 6px; }    
+    ::-webkit-scrollbar-track { background: #060913; }    
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }    
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }    
+    
+    @keyframes fadeUp {      
+      from { opacity: 0; transform: translateY(16px); }      
+      to   { opacity: 1; transform: translateY(0); }    
+    }  
+  </style></head><body>
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PC-Basic-Einstellungen – linus</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      cursor: url('https://cur.cursors-4u.net/black/blb-10/blb979.cur'), auto;
-    }
+<div class="bg-gradient"></div>
+<div class="bg-grid"></div>
 
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-      position: relative;
-      background: black;
-    }
+<header>  
+  <div class="header-tag">[ System Configuration Guide v2.0 ]</div>  
+  <h1>Windows Basic Tweaks</h1>  
+  <div class="subtitle">Linus</div>  
+  <div class="header-line"></div>
+</header>
 
-    canvas#stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 60px auto;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #00e6cc;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      color: #00bbaa;
-      margin-top: 30px;
-    }
-
-    ul {
-      margin: 15px 0;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 10px;
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: underline dotted;
-    }
-
-    a:hover {
-      color: #ffffff;
-      text-decoration: underline solid;
-    }
-
-    code {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 4px 6px;
-      border-radius: 6px;
-      font-family: monospace;
-    }
-
-    @media (max-width: 768px) {
-      .content {
-        padding: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <canvas id="stars"></canvas>
-
-  <div class="content">
-    <h1>PC-Basic-Einstellungen – linus</h1>
-    <p>Diese Schritte helfen dir, deinen PC grundlegend einzustellen für ein schnelleres und stabileres Windows – einfach & verständlich erklärt.</p>
-
-    <div class="section">
-      <h2>✅ 1. BIOS/UEFI-Einstellungen (Das Fundament)</h2>
-      <ul>
-        <li><strong>BIOS-Update:</strong> Vom Hersteller laden und über "EZ Flash" o. ä. installieren.</li>
-        <li><strong>RAM optimieren:</strong> XMP (Intel) oder EXPO (AMD) aktivieren.</li>
-        <li><strong>Resizable BAR:</strong> Aktivieren im BIOS.</li>
-        <li><strong>Lüfterkurve:</strong> Unter "Fan Control" sanft einstellen.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>✅ 2. Treiber & wichtige Software (Die Basis)</h2>
-      <ul>
-        <li>Windows- und Store-Updates ausführen.</li>
-        <li>Mainboard-Treiber & Chipsatz von Herstellerseiten laden.</li>
-        <li>Grafiktreiber via <em>NVIDIA App</em> oder <em>AMD Adrenalin</em>.</li>
-        <li><a href="https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/" target="_blank"><strong>Visual C++ All-in-One</strong></a></li>
-        <li>.NET Framework 3.5 aktivieren.</li>
-        <li>Zusätzliche Tools wie Samsung Magician, iCUE nutzen.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>✅ 3. Windows-Optimierung (Der Feinschliff)</h2>
-      <ul>
-        <li>Anzeigeeinstellungen + Hertz prüfen.</li>
-        <li>NVIDIA-Settings für Leistung optimieren.</li>
-        <li>Mausbeschleunigung deaktivieren.</li>
-        <li>Schnellstart deaktivieren.</li>
-        <li>Autostart-Programme bereinigen.</li>
-        <li>Energieoption: "Ausbalanciert"</li>
-        <li>Unerwünschte Apps deinstallieren.</li>
-        <li>GPU-Hardwarebeschleunigung + Spielmodus aktivieren.</li>
-        <li>Speicher-Integrität bei Bedarf deaktivieren.</li>
-        <li>Datenschutz-Einstellungen anpassen.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>✅ 4. Hinweise & Tools</h2>
-      <ul>
-        <li><strong>X3D CPUs:</strong> Xbox & Game Bar NICHT deinstallieren.</li>
-        <li><strong>Revo Uninstaller:</strong> Programme restlos entfernen.</li>
-        <li><strong>Wöchentliche Wartung:</strong><br>
-          <code>sfc /scannow</code><br>
-          <code>dism /online /cleanup-image /checkhealth</code><br>
-          <code>dism /online /cleanup-image /restorehealth</code>
-        </li>
-        <li><strong>Tägliche Optimierung:</strong> Defragmentierung/Optimierung über Windows-Suche</li>
-      </ul>
-    </div>
+<div class="wrapper">
+  <div class="winutil-banner">    
+    <div class="winutil-icon">⚡</div>    
+    <div class="winutil-text">      
+      <h3>Chris Titus WinUtil — Standard Tweaks</h3>      
+      <p>Bloatware entfernen · Datenschutz verbessern · Windows optimieren — alles in einem.<br>         PowerShell <strong>als Admin</strong> öffnen und ausführen:</p>      
+      <div class="cmd-row">        
+        <span class="cmd-box" id="winutil-cmd">irm christitus.com/win | iex</span>        
+        <button class="copy-btn" onclick="copyCmd('winutil-cmd', this)">📋 KOPIEREN</button>      
+      </div>    
+    </div>    
+    <a class="winutil-open" href="https://christitustech.github.io/winutil/" target="_blank">WEBSITE ↗</a>  
+  </div>  
+  
+  <div class="sections-grid">
+    <div class="card bios">      
+      <div class="card-number">01</div>      
+      <h2><span class="icon">🔧</span>BIOS / UEFI</h2>      
+      <ul>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>BIOS-Update:</strong> Auf der Hersteller-Website laden und via <span data-tip="ASUS = EZ Flash · MSI = M-Flash · Gigabyte = Q-Flash">EZ Flash / M-Flash / Q-Flash</span> flashen.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Schaltet deinen RAM auf die beworbene Taktrate hoch — z. B. 3200 → 6000 MHz">XMP / EXPO aktivieren:</span></strong> XMP = Intel, EXPO = AMD — volle RAM-Geschwindigkeit freischalten.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Erlaubt der GPU direkten Zugriff auf den vollen RAM → bis zu +15% FPS in manchen Spielen">Resizable BAR aktivieren:</span></strong> Im BIOS unter PCIe-Einstellungen — kostenloser FPS-Boost.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Lüfterkurve anpassen:</strong> Unter „Fan Control" / „Smart Fan" sanfte Kurve einstellen für leisen Betrieb.</span>        
+        </li>      
+      </ul>    
+    </div>    
+    
+    <div class="card driver">      
+      <div class="card-number">02</div>      
+      <h2><span class="icon">📦</span>Treiber &amp; Software</h2>      
+      <ul>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Windows-Updates:</strong> Einstellungen → Windows Update → Alles installieren. Danach auch <span data-tip="Start → Microsoft Store → Bibliothek → Updates laden">Store-Apps aktualisieren.</span></span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Mainboard-Treiber:</strong> Chipsatz, LAN, Audio direkt vom Hersteller — <a class="link" href="https://www.asus.com/support/" target="_blank">ASUS</a>, <a class="link" href="https://www.msi.com/support" target="_blank">MSI</a>, <a class="link" href="https://www.gigabyte.com/Support" target="_blank">Gigabyte</a>.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>GPU-Treiber:</strong> <a class="link" href="https://www.nvidia.com/en-us/software/nvidia-app/" target="_blank">NVIDIA App</a> oder <a class="link" href="https://www.amd.com/en/products/software/adrenalin.html" target="_blank">AMD Adrenalin</a> — immer aktuell halten.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><a class="link" href="https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/" target="_blank"><strong>Visual C++ All-in-One</strong></a> — verhindert „DLL not found"-Fehler in Spielen.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>.NET 3.5 aktivieren:</strong> <span data-tip="Systemsteuerung → Programme → Windows-Features aktivieren oder deaktivieren → .NET 3.5 anhaken">Systemsteuerung → Windows-Features</span> → Häkchen bei .NET Framework 3.5 setzen.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Hersteller-Tools:</strong> <a class="link" href="https://semiconductor.samsung.com/consumer-storage/magician/" target="_blank">Samsung Magician</a> (SSD-Health), <a class="link" href="https://www.corsair.com/icue" target="_blank">iCUE</a> (RGB/Lüfter).</span>        
+        </li>      
+      </ul>    
+    </div>    
+    
+    <div class="card win">      
+      <div class="card-number">03</div>      
+      <h2><span class="icon">🖥️</span>Windows-Optimierung</h2>      
+      <ul>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Bildwiederholrate:</strong> <span data-tip="Rechtsklick Desktop → Anzeigeeinstellungen → Erweiterte Anzeigeeinstellungen">Anzeigeeinstellungen</span> → Erweiterte Einstellungen → maximale Hz wählen.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="NVIDIA: Systemsteuerung → 3D-Einstellungen → Energieverwaltung auf Max. Leistung">NVIDIA / AMD auf Leistung:</span></strong> Im Treiber-Panel alle Einstellungen auf maximale Leistung setzen.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Einstellungen → Bluetooth & Geräte → Maus → Weitere Mauseinstellungen → Zeigeroptionen">Mausbeschleunigung aus:</span></strong> „Zeigergeschwindigkeit verbessern" deaktivieren — für präzises Aiming.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Systemsteuerung → Energieoptionen → Netzschalterverhalten → Schnellstart deaktivieren">Schnellstart deaktivieren:</span></strong> Sorgt für saubere Neustarts ohne veraltete Zustände.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Autostart bereinigen:</strong> <code>Strg + Shift + Esc</code> → Tab „Autostart" → alles Unnötige deaktivieren.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Hohe Leistung kann CPU-Temps erhöhen — Ausbalanciert ist für die meisten ideal">Energieoption: „Ausbalanciert"</span></strong> — optimal für Alltag &amp; Gaming. Kein Grund für „Höchstleistung".</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>GPU-Hardwarebeschleunigung:</strong> <span data-tip="Einstellungen → System → Anzeige → Grafik → Hardwarebes. GPU-Planung aktivieren">Einstellungen → Grafik</span> → Hardwarebes. GPU-Planung AN + Spielmodus AN.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong><span data-tip="Einstellungen → Windows-Sicherheit → Gerätesicherheit → Kernisolierung — nur bei Bedarf deaktivieren">Speicher-Integrität:</span></strong> Bei Bedarf deaktivieren für kleinen Leistungsgewinn.</span>        
+        </li>      
+      </ul>    
+    </div>    
+    
+    <div class="card tools">      
+      <div class="card-number">04</div>      
+      <h2><span class="icon">🛠️</span>Tools &amp; Wartung</h2>      
+      <ul>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>X3D CPUs <span class="warn">⚠ WICHTIG</span></strong> — Xbox &amp; Game Bar <strong>NICHT</strong> deinstallieren! Nötig für den 3D V-Cache Scheduler.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><a class="link" href="https://www.revouninstaller.com/" target="_blank"><strong>Revo Uninstaller</strong></a> — entfernt Programme restlos inkl. Registry-Reste. Besser als Windows-Standard.</span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span style="width:100%">            
+            <strong>Wöchentliche Systemwartung</strong> — PowerShell als Admin:            
+            <div class="terminal" id="maint-block">              
+              <button class="copy-all" onclick="copyBlock('maint-block', this)">ALLE KOPIEREN</button>              
+              <div><span class="ps">PS&gt;</span>sfc /scannow</div>              
+              <div><span class="ps">PS&gt;</span>dism /online /cleanup-image /checkhealth</div>              
+              <div><span class="ps">PS&gt;</span>dism /online /cleanup-image /restorehealth</div>            
+            </div>          
+          </span>        
+        </li>        
+        <li>          
+          <span class="bullet">›</span>          
+          <span><strong>Laufwerke optimieren:</strong> <span data-tip="Windows-Suche → Laufwerke defragmentieren und optimieren">Windows-Suche</span> → „Laufwerke defragmentieren" → SSDs: Optimieren, HDDs: Defragmentieren.</span>        
+        </li>      
+      </ul>    
+    </div>  
   </div>
+</div>
 
+<div class="statusbar">  
+  <span>SYSTEM READY</span>  
+  <span>OPTIMIZED</span>  
+  <span>TWEAKS LOADED</span>
+</div>
 
-  <script>
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    function createStars(count) {
-      stars = [];
-      for (let i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          z: Math.random() * canvas.width
-        });
-      }
-    }
-
-    function moveStars(distance) {
-      for (let star of stars) {
-        star.z -= distance;
-        if (star.z <= 0) {
-          star.z = canvas.width;
-          star.x = Math.random() * canvas.width;
-          star.y = Math.random() * canvas.height;
-        }
-      }
-    }
-
-    function drawStars() {
-      let cx = canvas.width / 2;
-      let cy = canvas.height / 2;
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "white";
-      for (let star of stars) {
-        let k = 128.0 / star.z;
-        let x = (star.x - cx) * k + cx;
-        let y = (star.y - cy) * k + cy;
-        if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) continue;
-        let size = (1 - star.z / canvas.width) * 2;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, 2 * Math.PI);
-        ctx.fill();
-      }
-    }
-
-    function animate() {
-      moveStars(0.4); 
-      drawStars();
-      requestAnimationFrame(animate);
-    }
-
-    createStars(1000);
-    animate();
-  </script>
-</body>
-</html>
+<script>
+/* ── COPY HELPERS ── */
+function copyCmd(id, btn) {  
+  const text = document.getElementById(id).textContent.trim();  
+  navigator.clipboard.writeText(text).then(() => {    
+    btn.textContent = '✅ KOPIERT';    
+    btn.classList.add('copied');    
+    setTimeout(() => { btn.textContent = '📋 KOPIEREN'; btn.classList.remove('copied'); }, 2200);  
+  });
+}
+function copyBlock(id, btn) {  
+  const lines = [...document.querySelectorAll('#' + id + ' div')];  
+  const text = lines.map(l => l.textContent.replace(/PS>/,'').trim()).filter(Boolean).join('\n');  
+  navigator.clipboard.writeText(text).then(() => {    
+    btn.textContent = '✅ KOPIERT';    
+    setTimeout(() => { btn.textContent = 'ALLE KOPIEREN'; }, 2200);  
+  });
+}
+</script>
+</body></html>
